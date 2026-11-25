@@ -99,14 +99,22 @@
         color: #6598ff;
       }
 
-      .fkg-close-menu {
+      #fkg-sidebar .fkg-close-menu {
         width: 38px;
         height: 38px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
         border: 1px solid rgba(255,255,255,.09);
         border-radius: 9px;
         background: #191e2b;
         color: white;
         font-size: 23px;
+        font-weight: 400;
+        line-height: 1;
         cursor: pointer;
       }
 
@@ -136,6 +144,7 @@
         color: #f4f6fc;
         font: inherit;
         font-size: 14px;
+        font-weight: 400;
         text-align: left;
         cursor: pointer;
       }
