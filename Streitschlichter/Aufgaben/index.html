@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>Aufgaben der Streitschlichter</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #10131c;
+  --panel: #191e2b;
+  --panel2: #222a3a;
+  --text: #f3f5fa;
+  --muted: #a2acc0;
+  --accent: #7795ff;
+  --border: #30394c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+  padding: 22px 7%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 27px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+/* HAUPTINHALT */
+
+main {
+  width: min(750px, 90%);
+  margin: 75px auto;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+h2 {
+  font-size: 21px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.category {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px;
+  margin-top: 25px;
+}
+
+.category h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category h2::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 5px;
+}
+
+.category p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.category ul {
+  padding-left: 22px;
+  margin-bottom: 0;
+}
+
+.category li {
+  padding: 6px 0;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 35px 15px;
+  font-size: 12px;
+}
+
+@media (max-width: 500px) {
+  header {
+    padding: 18px 5%;
+  }
+
+  main {
+    margin: 45px auto;
+  }
+
+  .category {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-button" id="menuButton"
+          aria-label="Menü öffnen"
+          aria-expanded="false">
+    ☰
+  </button>
+
+  <div class="logo">Aufgaben<span>.</span></div>
+
+  <div class="small">Streitschlichter FKG</div>
+</header>
+
+<!-- HAUPTINHALT -->
+
+<main>
+
+  <section>
+    <h1>Unsere Aufgaben.</h1>
+
+    <p class="subtitle">
+      Hier findest du eine Übersicht über die Aufgaben
+      und Tätigkeiten der Streitschlichter.
+    </p>
+  </section>
+
+  <section class="category">
+    <h2>Allgemeine Aufgaben</h2>
+
+    <ul>
+      <li>Wir sind ein Ansprechpartner, bei dem ihr geregelt einen Streit klären könnt ohne, dass direkt Eltern oder Lehrer über euren Streit informiert werden.</li>
+    </ul>
+  </section>
+
+  <section class="category">
+    <h2>Streitschlichtung</h2>
+
+    <ul>
+      <li>Wir unterliegen einer Schweigepflicht, das heißt, dass wir alles, was ihr uns anvertraut, vertraulich behandeln werden/müssen.</li>
+      <li>Wir wollen euch dabei helfen selbst eine Lösung zu finden.</li>
+    </ul>
+  </section>
+
+  <section class="category">
+    <h2>Organisation</h2>
+
+    <ul>
+      <li>Wenn ihr einen Streit habt, den ihr klären wollt, kommt gerne auf Frau Berger oder Frau Nawrot zu.</li>
+
+      <li>
+        Wenn ihr es zeitlich nicht schafft, bei Frau Berger oder Frau Nawrot vorbeizukommen, schreibt uns gerne über unsere
+        <a href="https://fkgstudents.dpdns.org/Streitschlichter/Kontakt"
+           target="_blank"
+           rel="noopener noreferrer">
+          Kontakt
+        </a>
+        Seite
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  · Streitschlichter FKG · Aufgaben ·
+</footer>
+
+<!-- ZENTRALE NAVIGATION -->
+
+<script src="/assets/navigation.js"></script>
+
+</body>
+</html>
