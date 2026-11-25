@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>Einstellungen – FKG Students</title>
+
+<style>
+:root {
+  --accent: var(--user-accent, #79a7ff);
+  --panel: #151f33;
+  --text: #f5f7ff;
+  --muted: #a4b0c7;
+  --line: rgba(180,200,235,.16);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--user-background, #0b1020);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+  padding: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+header a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+header span { color: var(--accent); }
+
+main {
+  width: min(850px, 100%);
+  margin: auto;
+  padding: 35px 20px 70px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(30px, 6vw, 42px);
+}
+
+.intro {
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+.panel {
+  padding: 23px;
+  margin-bottom: 17px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--panel);
+}
+
+.panel h2 {
+  margin: 0 0 17px;
+  font-size: 18px;
+}
+
+label {
+  display: block;
+  margin: 12px 0 7px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+select, input[type="color"] {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px;
+  background: #202c42;
+  color: white;
+  font: inherit;
+}
+
+input[type="color"] {
+  padding: 4px;
+  cursor: pointer;
+}
+
+.colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+}
+
+.color-choice {
+  width: 38px;
+  height: 38px;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.color-choice.selected {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+.toggle-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  color: var(--text);
+  margin-top: 12px;
+}
+
+.toggle-line input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+
+.preview {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.045);
+}
+
+.preview-button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.actions button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: white;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.actions .secondary {
+  background: #303b50;
+}
+
+.status {
+  min-height: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+[data-theme="light"] body {
+  color: #172033;
+}
+
+[data-theme="light"] .panel {
+  background: white;
+}
+
+[data-theme="light"] select {
+  background: #f1f4f9;
+  color: #172033;
+}
+
+@media (max-width: 550px) {
+  .panel { padding: 18px; }
+}
+</style>
+
+<script src="/assets/theme.js"></script>
+</head>
+
+<body>
+<header>
+  <a href="/">FKG<span>.</span>STUDENTS</a>
+</header>
+
+<main>
+  <h1>Deine Einstellungen</h1>
+  <p class="intro">
+    Gestalte FKG Students so, wie es dir am besten gefällt.
+    Deine Auswahl wird auf diesem Gerät gespeichert.
+  </p>
+
+  <section class="panel">
+    <h2>Farbschema</h2>
+    <label for="colorMode">Darstellung</label>
+    <select id="colorMode">
+      <option value="dark">Dunkel</option>
+      <option value="light">Hell</option>
+      <option value="system">Wie mein Gerät</option>
+    </select>
+  </section>
+
+  <section class="panel">
+    <h2>Akzentfarbe</h2>
+    <label>Vorgefertigte Farben</label>
+    <div class="colors" id="presets"></div>
+
+    <label for="customAccent">Eigene Farbe auswählen</label>
+    <input type="color" id="customAccent" value="#79a7ff">
+  </section>
+
+  <section class="panel">
+    <h2>Hintergrund</h2>
+    <label for="background">Hintergrunddesign</label>
+    <select id="background">
+      <option value="default">Standard</option>
+      <option value="midnight">Midnight</option>
+      <option value="soft">Soft</option>
+      <option value="ocean">Ocean</option>
+    </select>
+  </section>
+
+  <section class="panel">
+    <h2>Designstil</h2>
+    <label for="style">Darstellungsstil</label>
+    <select id="style">
+      <option value="modern">Modern</option>
+      <option value="minimal">Minimal</option>
+      <option value="glass">Glass</option>
+    </select>
+  </section>
+
+  <section class="panel">
+    <h2>Schriftgröße</h2>
+    <label for="fontSize">Textgröße</label>
+    <select id="fontSize">
+      <option value="small">Klein</option>
+      <option value="normal">Normal</option>
+      <option value="large">Groß</option>
+      <option value="extra">Sehr groß</option>
+    </select>
+  </section>
+
+  <section class="panel">
+    <h2>Animationen</h2>
+    <label class="toggle-line" for="animations">
+      Animationen aktivieren
+      <input type="checkbox" id="animations">
+    </label>
+  </section>
+
+  <section class="panel">
+    <h2>Live-Vorschau</h2>
+    <div class="preview">
+      <strong>So könnte FKG Students aussehen</strong>
+      <p>Deine persönliche Gestaltung wird hier direkt angezeigt.</p>
+      <span class="preview-button">Beispiel-Schaltfläche</span>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button type="button" id="reset">Zurücksetzen</button>
+    <button type="button" class="secondary" id="home">Zur Startseite</button>
+  </div>
+
+  <div class="status" id="status" aria-live="polite"></div>
+</main>
+
+<script>
+(() => {
+  const api = window.FKGTheme;
+  const ids = [
+    "colorMode", "background", "style",
+    "fontSize", "animations", "customAccent"
+  ];
+
+  const elements = Object.fromEntries(
+    ids.map(id => [id, document.getElementById(id)])
+  );
+
+  let settings = api.loadSettings();
+
+  function renderPresets() {
+    const container = document.getElementById("presets");
+    container.innerHTML = "";
+
+    api.presets.forEach(color => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "color-choice";
+      button.style.background = color;
+      button.setAttribute("aria-label", "Akzentfarbe " + color);
+      button.setAttribute("aria-pressed", String(settings.accent === color));
+
+      if (settings.accent === color) {
+        button.classList.add("selected");
+      }
+
+      button.addEventListener("click", () => {
+        settings.accent = color;
+        elements.customAccent.value = color;
+        update();
+      });
+
+      container.appendChild(button);
+    });
+  }
+
+  function readForm() {
+    settings.colorMode = elements.colorMode.value;
+    settings.background = elements.background.value;
+    settings.style = elements.style.value;
+    settings.fontSize = elements.fontSize.value;
+    settings.animations = elements.animations.checked;
+    settings.accent = elements.customAccent.value;
+  }
+
+  function update() {
+    readForm();
+    api.saveSettings(settings);
+    renderPresets();
+
+    document.getElementById("status").textContent =
+      "Deine Einstellungen wurden gespeichert.";
+  }
+
+  function fillForm() {
+    elements.colorMode.value = settings.colorMode;
+    elements.background.value = settings.background;
+    elements.style.value = settings.style;
+    elements.fontSize.value = settings.fontSize;
+    elements.animations.checked = settings.animations;
+    elements.customAccent.value = settings.accent;
+    renderPresets();
+  }
+
+  ids.forEach(id => {
+    elements[id].addEventListener("change", update);
+  });
+
+  elements.customAccent.addEventListener("input", update);
+
+  document.getElementById("reset").addEventListener("click", () => {
+    api.resetSettings();
+    settings = api.loadSettings();
+    fillForm();
+    document.getElementById("status").textContent =
+      "Die Standardeinstellungen wurden wiederhergestellt.";
+  });
+
+  document.getElementById("home").addEventListener("click", () => {
+    location.href = "/";
+  });
+
+  fillForm();
+})();
+</script>
+
+<script src="/assets/navigation.js"></script>
+</body>
+</html>
