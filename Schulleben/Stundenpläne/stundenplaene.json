@@ -1,0 +1,78 @@
+
+{
+  "classes": {
+    "5a": { "available": false },
+    "5b": { "available": false },
+    "5c": { "available": false },
+    "5d": { "available": false },
+
+    "6a": { "available": false },
+    "6b": { "available": false },
+    "6c": { "available": false },
+    "6d": { "available": false },
+
+    "7a": { "available": false },
+    "7b": { "available": false },
+    "7c": { "available": false },
+    "7d": { "available": false },
+
+    "8a": { "available": false },
+    "8b": { "available": false },
+    "8c": { "available": false },
+    "8d": { "available": false },
+
+    "9a": {
+      "available": true,
+      "schoolEnd": "12:55",
+      "days": {
+        "Montag": [
+          {"subject":"Latein","start":"08:00","end":"08:45","room":"H12","teacher":"Krapf"},
+          {"subject":"Chemie","start":"08:45","end":"09:30","room":"E9","teacher":"Lorey"},
+          {"subject":"Biologie","start":"09:45","end":"10:30","room":"H6","teacher":"Östreicher"},
+          {"subject":"Mathe","start":"10:30","end":"11:15","room":"H2","teacher":"Jung"},
+          {"subject":"Sport","start":"11:30","end":"12:55","room":"","teacher":"Kamhavi"}
+        ],
+        "Dienstag": [
+          {"subject":"Mathe","start":"08:00","end":"08:45","room":"H2","teacher":"Jung"},
+          {"subject":"Musik","start":"08:45","end":"09:30","room":"Mu2","teacher":"Cristandel"},
+          {"subject":"Englisch","start":"09:45","end":"10:30","room":"H2","teacher":"Hennike"},
+          {"subject":"Informatik","start":"10:30","end":"11:15","room":"207","teacher":"Schöning"},
+          {"subject":"Chemie/Physik","start":"11:30","end":"12:55","room":"","teacher":""}
+        ],
+        "Mittwoch": [
+          {"subject":"Deutsch","start":"08:00","end":"08:45","room":"H2","teacher":"Klozky"},
+          {"subject":"Geschichte","start":"08:45","end":"09:30","room":"H2","teacher":"Coppentah"},
+          {"subject":"Musik","start":"09:45","end":"10:30","room":"Mu2","teacher":"Cristandel"},
+          {"subject":"Religion","start":"10:30","end":"11:15","room":"K6","teacher":"Zeis"},
+          {"subject":"Latein","start":"11:30","end":"12:55","room":"H12","teacher":"Krapf"}
+        ],
+        "Donnerstag": [
+          {"subject":"Mathe","start":"08:00","end":"09:30","room":"H2","teacher":"Jung"},
+          {"subject":"Physik","start":"09:45","end":"10:30","room":"113","teacher":"Schweizer"},
+          {"subject":"Chemie","start":"10:30","end":"11:15","room":"E9","teacher":"Lorey"},
+          {"subject":"Geschichte","start":"11:30","end":"12:10","room":"H2","teacher":"Coppentah"},
+          {"subject":"Informatik","start":"12:10","end":"12:55","room":"207","teacher":"Schöning"}
+        ],
+        "Freitag": [
+          {"subject":"Englisch","start":"08:00","end":"09:30","room":"H2","teacher":"Hennike"},
+          {"subject":"Deutsch","start":"09:45","end":"10:30","room":"H2","teacher":"Klozky"},
+          {"subject":"Religion","start":"10:30","end":"11:15","room":"H2","teacher":"Zeis"},
+          {"subject":"Informatik","start":"11:30","end":"12:10","room":"207","teacher":"Schöning"},
+          {"subject":"Physik","start":"12:10","end":"12:55","room":"113","teacher":"Schweizer"}
+        ]
+      }
+    },
+    "9b": { "available": false },
+    "9c": { "available": false },
+
+    "10a": { "available": false },
+    "10b": { "available": false },
+    "10c": { "available": false },
+    "10d": { "available": false },
+
+    "11a": { "available": false },
+    "11b": { "available": false },
+    "11c": { "available": false },
+    "11d": { "available": false }
+  }
+}
