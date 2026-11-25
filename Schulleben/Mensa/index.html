@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+<title>Mensaplan – FKG Students</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #10131c;
+  --panel: #191e2b;
+  --panel-hover: #222a3b;
+  --text: #f4f6fc;
+  --muted: #a0a9bd;
+  --blue: #6598ff;
+  --border: rgba(255,255,255,.09);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { color: inherit; text-decoration: none; }
+
+header {
+  height: 72px;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(16,19,28,.94);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo span { color: var(--blue); }
+
+.sidebar {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 290px;
+  padding: 24px 18px;
+  background: #151a26;
+  border-right: 1px solid var(--border);
+  transform: translateX(-105%);
+  transition: transform .25s ease;
+  overflow-y: auto;
+}
+
+.sidebar.open { transform: translateX(0); }
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.close-button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.menu-label {
+  margin: 25px 10px 10px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.menu-link, .menu-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-link:hover, .menu-toggle:hover {
+  background: var(--panel-hover);
+}
+
+.menu-link.active {
+  background: rgba(101,152,255,.14);
+  color: var(--blue);
+}
+
+.arrow {
+  margin-left: auto;
+  transition: transform .2s;
+}
+
+.menu-toggle.expanded .arrow { transform: rotate(90deg); }
+
+.submenu {
+  display: none;
+  margin-left: 17px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+}
+
+.submenu.open { display: block; }
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0,0,0,.55);
+}
+
+.overlay.show { display: block; }
+
+main {
+  width: min(1100px, 100%);
+  margin: auto;
+  padding: 55px 28px 80px;
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -1.5px;
+}
+
+.intro {
+  max-width: 650px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+  margin-top: 38px;
+}
+
+.day-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 145px;
+  padding: 23px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: transform .2s, background .2s;
+}
+
+.day-card:hover {
+  transform: translateY(-3px);
+  background: var(--panel-hover);
+}
+
+.food-icon {
+  width: 75px;
+  height: 75px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: rgba(101,152,255,.12);
+  font-size: 38px;
+}
+
+.day-name {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.food-name {
+  margin-top: 8px;
+  font-size: 21px;
+  font-weight: 750;
+}
+
+.note {
+  margin-top: 30px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+  background: var(--panel);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+footer {
+  padding: 25px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  header { padding: 0 16px; }
+  main { padding: 38px 16px 60px; }
+  .week { grid-template-columns: 1fr; }
+  .day-card { min-height: 120px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-button" id="menuButton" aria-label="Menü öffnen">☰</button>
+  <a class="logo" href="/">FKG<span>.</span>STUDENTS</a>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <div class="logo">FKG<span>.</span>STUDENTS</div>
+    <button class="close-button" id="closeButton">×</button>
+  </div>
+
+  <div class="menu-label">Deine Projekte</div>
+
+  <button class="menu-toggle" id="streitToggle">
+    ⚖️ Streitschlichter <span class="arrow">›</span>
+  </button>
+
+  <div class="submenu" id="streitSubmenu">
+    <a class="menu-link" href="/Streitschlichter/">Übersicht</a>
+    <a class="menu-link" href="/Streitschlichter/Kontakt/">Kontakt</a>
+    <a class="menu-link" href="/Streitschlichter/Aufgaben/">Aufgaben</a>
+  </div>
+
+  <div class="menu-label">Schulleben</div>
+
+  <button class="menu-toggle expanded" id="schoolToggle">
+    🏫 Schulleben <span class="arrow">›</span>
+  </button>
+
+  <div class="submenu open" id="schoolSubmenu">
+    <a class="menu-link" href="/Schulleben/Stundenpl%C3%A4ne/">
+      Stundenpläne
+    </a>
+    <a class="menu-link active" href="/Schulleben/Mensaplan/">
+      Mensaplan
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="eyebrow">Schulleben</div>
+  <h1>Mensaplan</h1>
+
+  <p class="intro">
+    Was gibt es diese Woche in der Mensa?
+    Hier findest du die Übersicht für jeden Wochentag.
+  </p>
+
+  <div class="week">
+    <article class="day-card">
+      <div class="food-icon">🍔</div>
+      <div>
+        <div class="day-name">Montag</div>
+        <div class="food-name">Burger</div>
+      </div>
+    </article>
+
+    <article class="day-card">
+      <div class="food-icon">🥪</div>
+      <div>
+        <div class="day-name">Dienstag</div>
+        <div class="food-name">Sandwiches</div>
+      </div>
+    </article>
+
+    <article class="day-card">
+      <div class="food-icon">🧇</div>
+      <div>
+        <div class="day-name">Mittwoch</div>
+        <div class="food-name">Waffeln</div>
+      </div>
+    </article>
+
+    <article class="day-card">
+      <div class="food-icon">🥖</div>
+      <div>
+        <div class="day-name">Donnerstag</div>
+        <div class="food-name">Schnitzelbrötchen</div>
+      </div>
+    </article>
+
+    <article class="day-card">
+      <div class="food-icon">🌭</div>
+      <div>
+        <div class="day-name">Freitag</div>
+        <div class="food-name">Currywurst</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="note">
+    <strong>Hinweis:</strong> Dies ist eine Übersicht des Wochenangebots.
+    Änderungen und Abweichungen sind möglich.
+  </div>
+</main>
+
+<footer>
+  FKG Students · Schulleben
+</footer>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function openMenu() {
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+}
+
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+}
+
+document.getElementById("menuButton").addEventListener("click", openMenu);
+document.getElementById("closeButton").addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeMenu();
+});
+
+function setupToggle(buttonId, submenuId) {
+  const button = document.getElementById(buttonId);
+  const submenu = document.getElementById(submenuId);
+
+  button.addEventListener("click", () => {
+    button.classList.toggle("expanded");
+    submenu.classList.toggle("open");
+  });
+}
+
+setupToggle("streitToggle", "streitSubmenu");
+setupToggle("schoolToggle", "schoolSubmenu");
+</script>
+<script src="/assets/navigation.js"></script>
+</body>
+</html>
