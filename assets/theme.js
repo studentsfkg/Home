@@ -218,7 +218,17 @@
       select {
         accent-color: var(--user-accent);
       }
+/* BUTTONS AUF DEN STREITSCHLICHTER-SEITEN */
+.primary-button,
+button.primary {
+  background: var(--user-accent) !important;
+  color: #ffffff !important;
+}
 
+.primary-button:hover,
+button.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
       [data-theme="light"] input,
       [data-theme="light"] textarea,
       [data-theme="light"] select {
