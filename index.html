@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>FKG Students – Die digitale Schülerplattform</title>
+<meta name="description" content="Willkommen bei FKG Students. Entdecke digitale Projekte und Angebote unserer Schulgemeinschaft.">
+
+<style>
+:root {
+    color-scheme: dark;
+    --bg: #10131c;
+    --panel: #191e2b;
+    --panel-hover: #222a3b;
+    --text: #f4f6fc;
+    --muted: #a0a9bd;
+    --blue: #6598ff;
+    --border: rgba(255,255,255,.09);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 50% -20%, rgba(66,112,220,.19), transparent 55%),
+        var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* HEADER */
+
+header {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    background: rgba(16,19,28,.82);
+    backdrop-filter: blur(18px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav {
+    max-width: 1150px;
+    margin: auto;
+    padding: 19px 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    color: white;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--blue);
+}
+
+.nav-link {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: auto;
+    transition: color .2s;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+/* BURGER BUTTON */
+
+.menu-button {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    flex-shrink: 0;
+}
+
+.menu-button:hover {
+    background: var(--panel-hover);
+    border-color: rgba(101,152,255,.5);
+}
+
+.menu-button span {
+    display: block;
+    width: 19px;
+    height: 2px;
+    background: white;
+    border-radius: 5px;
+}
+
+/* HERO */
+
+.hero {
+    max-width: 1050px;
+    margin: auto;
+    padding: 125px 25px 100px;
+    text-align: center;
+    animation: fadeIn .8s ease;
+}
+
+.eyebrow {
+    display: inline-block;
+    padding: 7px 15px;
+    border: 1px solid rgba(101,152,255,.25);
+    background: rgba(101,152,255,.09);
+    color: #91b5ff;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: clamp(43px, 8vw, 82px);
+    font-weight: 850;
+    letter-spacing: -4px;
+    line-height: 1.08;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    background: linear-gradient(110deg, #8bb5ff, #5488f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 620px;
+    margin: auto;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.hero-button {
+    display: inline-block;
+    margin-top: 38px;
+    padding: 13px 24px;
+    border-radius: 10px;
+    background: #5488f5;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.hero-button:hover {
+    background: #76a2ff;
+    transform: translateY(-2px);
+}
+
+/* PROJECTS */
+
+.projects {
+    max-width: 1050px;
+    margin: auto;
+    padding: 20px 25px 110px;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+.section-heading small {
+    color: var(--blue);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+    font-size: 30px;
+    letter-spacing: -.8px;
+    margin-top: 5px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 235px;
+    padding: 27px;
+    background: linear-gradient(145deg, #1b2232, #171c28);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform .25s, border-color .25s, background .25s;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(101,152,255,.5);
+    background: var(--panel-hover);
+}
+
+.project-icon {
+    width: 47px;
+    height: 47px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: rgba(101,152,255,.13);
+    color: #8eb3ff;
+    margin-bottom: 24px;
+    font-size: 23px;
+}
+
+.project-card h3 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.project-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.project-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 22px;
+    color: #8eb3ff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.project-card .arrow {
+    font-size: 20px;
+    transition: transform .2s;
+}
+
+.project-card:hover .arrow {
+    transform: translateX(5px);
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 27px 25px;
+}
+
+.footer-inner {
+    max-width: 1050px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+footer p,
+footer a {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .nav-link {
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 90px 22px 75px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .projects {
+        padding-bottom: 75px;
+    }
+
+    .section-heading h2 {
+        font-size: 26px;
+    }
+}
+</style>
+</head>
+
+<body id="top">
+
+<!-- HEADER -->
+
+<header>
+    <nav>
+
+        <button class="menu-button"
+                id="menuButton"
+                aria-label="Menü öffnen"
+                aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <a href="/" class="logo">FKG<span>.</span>STUDENTS</a>
+
+        <a href="#projekte" class="nav-link">Projekte entdecken ↗</a>
+
+    </nav>
+</header>
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="eyebrow">Die digitale Schülerplattform</div>
+
+        <h1>
+            Willkommen bei<br>
+            <span>FKG Students.</span>
+        </h1>
+
+        <p>
+            Entdecke digitale Projekte, Angebote und
+            Informationen aus unserer Schulgemeinschaft.
+            Alles an einem Ort.
+        </p>
+
+        <a href="#projekte" class="hero-button">
+            Projekte entdecken →
+        </a>
+
+    </section>
+
+    <!-- PROJEKTE -->
+
+    <section class="projects" id="projekte">
+
+        <div class="section-heading">
+            <small>Entdecken</small>
+            <h2>Unsere Projekte</h2>
+            <p>Digitale Angebote und Anlaufstellen im Überblick.</p>
+        </div>
+
+        <div class="project-grid">
+
+            <!-- STREITSCHLICHTER -->
+
+            <a href="/Streitschlichter/" class="project-card">
+
+                <div class="project-icon">⚖</div>
+
+                <h3>Streitschlichter</h3>
+
+                <p>
+                    Informationen über die Streitschlichter,
+                    ihre Aufgaben und Möglichkeiten zur Kontaktaufnahme.
+                </p>
+
+                <div class="project-bottom">
+                    <span>Website öffnen</span>
+                    <span class="arrow">→</span>
+                </div>
+
+            </a>
+
+            <!-- STUNDENPLÄNE -->
+
+            <a href="/Schulleben/Stundenpl%C3%A4ne/" class="project-card">
+
+                <div class="project-icon">🗓️</div>
+
+                <h3>Stundenpläne</h3>
+
+                <p>
+                    Finde den aktuellen Stundenplan deiner Klasse
+                    und behalte deinen Schulalltag im Überblick.
+                </p>
+
+                <div class="project-bottom">
+                    <span>Stundenplan ansehen</span>
+                    <span class="arrow">→</span>
+                </div>
+
+            </a>
+
+            <!-- MENSAPLAN -->
+
+            <a href="/Schulleben/Mensaplan/" class="project-card">
+
+                <div class="project-icon">🍽️</div>
+
+                <h3>Mensaplan</h3>
+
+                <p>
+                    Entdecke das wöchentliche Angebot der Mensa
+                    und erfahre, was es an den einzelnen Tagen gibt.
+                </p>
+
+                <div class="project-bottom">
+                    <span>Mensaplan ansehen</span>
+                    <span class="arrow">→</span>
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+    <div class="footer-inner">
+
+        <p>© <span id="year"></span> FKG Students</p>
+
+        <a href="#top"
+           onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+            Zurück nach oben ↑
+        </a>
+
+    </div>
+</footer>
+
+<!-- ZENTRALE NAVIGATION -->
+
+<script src="/assets/navigation.js"></script>
+
+<!-- JAHR AUTOMATISCH AKTUALISIEREN -->
+
+<script>
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+</script>
+
+</body>
+</html>
