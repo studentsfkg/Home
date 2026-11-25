@@ -1,0 +1,1168 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>Fundsachen – FKG Students</title>
+<meta name="description" content="Fundsachen am Friedrich-Koenig-Gymnasium Würzburg melden und wiederfinden.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+    color-scheme: dark;
+    --bg: #10131c;
+    --panel: #191e2b;
+    --panel2: #222938;
+    --text: #f4f5f8;
+    --muted: #a6adbd;
+    --accent: #7c9cff;
+    --border: #30394b;
+    --green: #65d6a0;
+    --red: #ff8585;
+    --yellow: #f5ca75;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+    padding: 22px 20px;
+    background: #141925;
+    border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+    max-width: 1050px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+}
+
+.menu-button {
+    order: -1;
+}
+
+.brand {
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.brand span {
+    color: var(--accent);
+}
+
+.menu-button {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+main {
+    max-width: 1050px;
+    margin: 35px auto;
+    padding: 0 18px;
+}
+
+.hero {
+    padding: 35px 25px;
+    background: linear-gradient(135deg, #202c47, #191e2b);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 6vw, 43px);
+    margin: 0 0 12px;
+}
+
+.hero p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 650px;
+}
+
+.section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 24px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 23px;
+}
+
+.description, .muted {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: 600;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: white;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+input:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+input[type="file"] {
+    font-size: 14px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.primary, .secondary, .approve, .reject, .delete {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 15px;
+    font-weight: 700;
+}
+
+.primary {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: white;
+    border: 1px solid var(--border);
+}
+
+.approve {
+    background: #174432;
+    color: var(--green);
+}
+
+.reject {
+    background: #49391b;
+    color: var(--yellow);
+}
+
+.delete {
+    background: #472323;
+    color: var(--red);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.message {
+    display: none;
+    padding: 13px;
+    margin-top: 16px;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.message.success {
+    display: block;
+    background: #15372c;
+    color: var(--green);
+}
+
+.message.error {
+    display: block;
+    background: #402323;
+    color: var(--red);
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 17px;
+}
+
+.item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+    background: #141925;
+}
+
+.item-content {
+    padding: 16px;
+}
+
+.item h3 {
+    margin: 0 0 9px;
+}
+
+.item p {
+    color: var(--muted);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.item-date {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 15px;
+    font-size: 13px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 18px 0;
+}
+
+.tab {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 9px;
+    padding: 10px 13px;
+}
+
+.tab.active {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.admin-item {
+    display: grid;
+    grid-template-columns: minmax(160px, 230px) 1fr;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 11px;
+    background: var(--panel2);
+}
+
+.admin-item h3 {
+    margin: 0 0 10px;
+}
+
+.admin-item p {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--panel2);
+    margin-bottom: 10px;
+}
+
+.status.pending {
+    color: var(--yellow);
+}
+
+.status.approved {
+    color: var(--green);
+}
+
+.status.rejected {
+    color: var(--red);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+@media(max-width:650px) {
+    main {
+        margin-top: 20px;
+    }
+
+    .section {
+        padding: 18px;
+    }
+
+    .admin-item {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-item img {
+        height: 220px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="brand">FKG <span>Students</span></div>
+        <button class="menu-button" id="menuButton" aria-label="Menü öffnen">☰</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- ÖFFENTLICHER BEREICH -->
+
+    <div id="publicView">
+
+        <section class="hero">
+            <h1>Fundsachen</h1>
+            <p>
+                Etwas gefunden oder etwas verloren?
+                Hier kannst du gefundene Gegenstände melden
+                und nach deinen verlorenen Sachen suchen.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Fundstück melden</h2>
+
+            <p class="description">
+                Du hast etwas in der Schule gefunden?
+                Lade ein Foto hoch und beschreibe, wo du es gefunden hast.
+                Deine Meldung wird erst nach einer Prüfung veröffentlicht.
+            </p>
+
+            <form id="reportForm">
+
+                <label for="title">Was hast du gefunden?</label>
+                <input id="title" type="text" maxlength="100"
+                    placeholder="z. B. Schwarze Trinkflasche" required>
+
+                <label for="description">Beschreibung</label>
+                <textarea id="description" maxlength="1000"
+                    placeholder="Beschreibe den Gegenstand möglichst genau ..."
+                    required></textarea>
+
+                <label for="location">Fundort</label>
+                <input id="location" type="text" maxlength="200"
+                    placeholder="z. B. Sporthalle, Raum 204 ..." required>
+
+                <label for="foundAt">Wann wurde es gefunden?</label>
+                <input id="foundAt" type="date" required>
+
+                <label for="photo">Foto des Fundstücks</label>
+                <input id="photo" type="file"
+                    accept="image/jpeg,image/png,image/webp" required>
+
+                <p class="description">
+                    Erlaubte Formate: JPG, PNG und WebP.
+                    Maximale Dateigröße: 3 MB.
+                </p>
+
+                <button class="primary full" id="submitButton" type="submit">
+                    Fundstück einreichen
+                </button>
+
+                <div id="formMessage" class="message" role="status"></div>
+            </form>
+        </section>
+
+        <section class="section">
+            <h2>Gefundene Gegenstände</h2>
+
+            <p class="description">
+                Hier findest du alle freigegebenen Fundmeldungen.
+            </p>
+
+            <div id="publicItems" class="items">
+                <div class="empty">Fundmeldungen werden geladen ...</div>
+            </div>
+        </section>
+
+    </div>
+
+
+    <!-- ADMIN LOGIN -->
+
+    <div id="adminView" class="hidden">
+
+        <section class="hero">
+            <h1>Fundsachen – Verwaltung</h1>
+            <p>
+                Interner Verwaltungsbereich von FKG Students.
+                Hier kannst du Fundmeldungen prüfen und verwalten.
+            </p>
+        </section>
+
+        <section id="loginPanel" class="section">
+            <h2>Administrator-Anmeldung</h2>
+
+            <p class="description">
+                Melde dich mit deinem bestehenden Supabase-Admin-Konto an.
+            </p>
+
+            <form id="loginForm">
+                <label for="email">E-Mail-Adresse</label>
+                <input id="email" type="email"
+                    autocomplete="username" required>
+
+                <label for="password">Passwort</label>
+                <input id="password" type="password"
+                    autocomplete="current-password" required>
+
+                <button class="primary full" id="loginButton" type="submit">
+                    Anmelden
+                </button>
+
+                <div id="loginMessage" class="message" role="status"></div>
+            </form>
+        </section>
+
+        <section id="adminPanel" class="hidden">
+
+            <section class="section">
+                <h2>Verwaltung</h2>
+
+                <p class="description" id="adminInfo">
+                    Du bist angemeldet.
+                </p>
+
+                <div class="toolbar">
+                    <button class="secondary" id="refreshButton">
+                        Aktualisieren
+                    </button>
+
+                    <button class="secondary" id="logoutButton">
+                        Abmelden
+                    </button>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Fundmeldungen</h2>
+
+                <div class="toolbar">
+                    <button class="tab active" data-filter="pending">
+                        Ausstehend
+                    </button>
+
+                    <button class="tab" data-filter="approved">
+                        Freigegeben
+                    </button>
+
+                    <button class="tab" data-filter="rejected">
+                        Abgelehnt
+                    </button>
+
+                    <button class="tab" data-filter="all">
+                        Alle
+                    </button>
+                </div>
+
+                <div id="adminItems">
+                    <div class="empty">Fundmeldungen werden geladen ...</div>
+                </div>
+            </section>
+
+        </section>
+    </div>
+
+</main>
+
+<footer>
+    FKG Students · Digitale Schülerplattform
+</footer>
+
+<script>
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+    "https://rsshyrnohmiotwohspvw.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_olgYybAcmvNySIl_-xyknw_41MZ_XXR";
+
+const ADMIN_ID =
+    "585afdaa-3699-417f-a13d-4d4f22d62874";
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =====================================
+   HILFSFUNKTIONEN
+===================================== */
+
+function element(tag, className, text) {
+    const el = document.createElement(tag);
+
+    if (className) el.className = className;
+    if (text !== undefined) el.textContent = text;
+
+    return el;
+}
+
+function localDateString() {
+    const now = new Date();
+
+    return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+    ].join("-");
+}
+
+function showMessage(target, text, type) {
+    target.textContent = text;
+    target.className = "message " + type;
+}
+
+function formatDate(date) {
+    return new Date(date + "T12:00:00").toLocaleDateString("de-DE");
+}
+
+function formatDateTime(date) {
+    return new Date(date).toLocaleString("de-DE");
+}
+
+
+/* =====================================
+   NAVIGATION / HASH
+===================================== */
+
+const publicView = document.getElementById("publicView");
+const adminView = document.getElementById("adminView");
+
+function updateView() {
+    const isAdmin = location.hash.toLowerCase() === "#admin";
+
+    publicView.classList.toggle("hidden", isAdmin);
+    adminView.classList.toggle("hidden", !isAdmin);
+
+    if (isAdmin) {
+        showLogin();
+        document.getElementById("loginMessage").className = "message";
+        document.getElementById("loginForm").reset();
+    } else {
+        loadPublicItems();
+    }
+}
+
+window.addEventListener("hashchange", updateView);
+
+
+/* =====================================
+   ÖFFENTLICHES FORMULAR
+===================================== */
+
+const form = document.getElementById("reportForm");
+const formMessage = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitButton");
+
+const today = localDateString();
+
+document.getElementById("foundAt").max = today;
+document.getElementById("foundAt").value = today;
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Wird eingereicht ...";
+    formMessage.className = "message";
+
+    let uploadedPath = null;
+
+    try {
+        const title = document.getElementById("title").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const locationText = document.getElementById("location").value.trim();
+        const foundAt = document.getElementById("foundAt").value;
+        const file = document.getElementById("photo").files[0];
+
+        if (!title || !description || !locationText || !foundAt || !file) {
+            throw new Error("Bitte fülle alle Felder aus.");
+        }
+
+        if (foundAt > today) {
+            throw new Error("Das Funddatum darf nicht in der Zukunft liegen.");
+        }
+
+        const extensions = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp"
+        };
+
+        if (!extensions[file.type]) {
+            throw new Error("Bitte verwende JPG, PNG oder WebP.");
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            throw new Error("Das Foto darf maximal 5 MB groß sein.");
+        }
+
+        uploadedPath = crypto.randomUUID() + "." + extensions[file.type];
+
+        const { error: uploadError } = await db.storage
+            .from("fundgrube")
+            .upload(uploadedPath, file, {
+                contentType: file.type,
+                upsert: false
+            });
+
+        if (uploadError) throw uploadError;
+
+        const { error: insertError } = await db
+            .from("fundgrube_items")
+            .insert({
+                title: title,
+                description: description,
+                location: locationText,
+                found_at: foundAt,
+                image_path: uploadedPath
+            });
+
+        if (insertError) throw insertError;
+
+        form.reset();
+        document.getElementById("foundAt").value = today;
+
+        showMessage(
+            formMessage,
+            "Vielen Dank! Deine Fundmeldung wurde eingereicht und wartet auf die Freigabe.",
+            "success"
+        );
+
+    } catch (error) {
+        console.error("Fundmeldung:", error);
+
+        if (uploadedPath) {
+            const { error: cleanupError } = await db.storage
+                .from("fundgrube")
+                .remove([uploadedPath]);
+
+            if (cleanupError) {
+                console.error("Foto konnte nicht aufgeräumt werden:", cleanupError);
+            }
+        }
+
+        showMessage(
+            formMessage,
+            error.message || "Die Meldung konnte nicht eingereicht werden.",
+            "error"
+        );
+
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Fundstück einreichen";
+    }
+});
+
+
+/* =====================================
+   ÖFFENTLICHE FUNDSACHEN
+===================================== */
+
+async function loadPublicItems() {
+    if (location.hash.toLowerCase() === "#admin") return;
+
+    const container = document.getElementById("publicItems");
+
+    container.replaceChildren(
+        element("div", "empty", "Fundmeldungen werden geladen ...")
+    );
+
+    const { data, error } = await db
+        .from("fundgrube_items")
+        .select("id,title,description,location,found_at,created_at")
+        .eq("status", "approved")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+
+        container.replaceChildren(
+            element("div", "empty", "Fundmeldungen konnten nicht geladen werden.")
+        );
+        return;
+    }
+
+    container.replaceChildren();
+
+    if (!data || data.length === 0) {
+        container.appendChild(
+            element("div", "empty", "Aktuell gibt es keine veröffentlichten Fundsachen.")
+        );
+        return;
+    }
+
+    for (const item of data) {
+        const card = element("article", "item");
+        const img = element("img");
+        const content = element("div", "item-content");
+
+        img.alt = "Foto der Fundsache";
+        img.loading = "lazy";
+
+        content.append(
+            element("h3", "", item.title),
+            element("p", "", item.description),
+            element("p", "", "Fundort: " + item.location),
+            element("div", "item-date", "Gefunden am: " + formatDate(item.found_at))
+        );
+
+        card.append(img, content);
+        container.appendChild(card);
+
+        try {
+            const { data: imageData, error: imageError } =
+                await db.functions.invoke("fundgrube-public-images", {
+                    body: { item_id: item.id }
+                });
+
+            if (imageError || !imageData?.signedUrl) {
+                img.alt = "Foto momentan nicht verfügbar";
+                continue;
+            }
+
+            img.src = imageData.signedUrl;
+
+        } catch (error) {
+            console.error("Bildfehler:", error);
+            img.alt = "Foto momentan nicht verfügbar";
+        }
+    }
+}
+
+
+/* =====================================
+   ADMIN-BEREICH
+===================================== */
+
+const loginPanel = document.getElementById("loginPanel");
+const adminPanel = document.getElementById("adminPanel");
+const loginMessage = document.getElementById("loginMessage");
+const adminItems = document.getElementById("adminItems");
+
+let currentItems = [];
+let currentFilter = "pending";
+let adminLoading = false;
+
+function showLogin() {
+    loginPanel.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
+}
+
+function showAdmin() {
+    loginPanel.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+}
+
+async function checkAdmin() {
+    if (location.hash.toLowerCase() !== "#admin") return false;
+
+    const { data, error } = await db.auth.getUser();
+
+    if (error || !data.user) {
+        showLogin();
+        return false;
+    }
+
+    if (data.user.id !== ADMIN_ID) {
+        await db.auth.signOut();
+        showLogin();
+
+        showMessage(
+            loginMessage,
+            "Dieses Konto besitzt keine Admin-Berechtigung.",
+            "error"
+        );
+
+        return false;
+    }
+
+    showAdmin();
+    await loadAdminItems();
+
+    return true;
+}
+
+
+/* =====================================
+   ADMIN LOGIN
+===================================== */
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    async (event) => {
+        event.preventDefault();
+
+        const button = document.getElementById("loginButton");
+
+        button.disabled = true;
+        button.textContent = "Anmeldung läuft ...";
+
+        try {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            const { error } = await db.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) throw error;
+
+            await checkAdmin();
+
+        } catch (error) {
+            showMessage(
+                loginMessage,
+                error.message || "Anmeldung fehlgeschlagen.",
+                "error"
+            );
+        } finally {
+            button.disabled = false;
+            button.textContent = "Anmelden";
+        }
+    }
+);
+
+
+/* =====================================
+   ADMIN: FUNDMELDUNGEN LADEN
+===================================== */
+
+async function loadAdminItems() {
+    if (adminLoading || location.hash.toLowerCase() !== "#admin") return;
+
+    adminLoading = true;
+
+    adminItems.replaceChildren(
+        element("div", "empty", "Fundmeldungen werden geladen ...")
+    );
+
+    try {
+        const { data, error } = await db
+            .from("fundgrube_items")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        currentItems = data || [];
+        await renderAdminItems();
+
+    } catch (error) {
+        console.error(error);
+
+        adminItems.replaceChildren(
+            element("div", "empty", "Fehler beim Laden: " + error.message)
+        );
+
+    } finally {
+        adminLoading = false;
+    }
+}
+
+
+/* =====================================
+   ADMIN: FUNDMELDUNGEN ANZEIGEN
+===================================== */
+
+async function renderAdminItems() {
+    adminItems.replaceChildren();
+
+    const filtered = currentFilter === "all"
+        ? currentItems
+        : currentItems.filter(item => item.status === currentFilter);
+
+    if (filtered.length === 0) {
+        adminItems.appendChild(
+            element("div", "empty", "Hier gibt es aktuell keine Fundmeldungen.")
+        );
+        return;
+    }
+
+    for (const item of filtered) {
+        const card = element("article", "admin-item");
+        const img = element("img");
+        const content = element("div");
+
+        img.alt = "Foto: " + item.title;
+        img.loading = "lazy";
+
+        const statusNames = {
+            pending: "Ausstehend",
+            approved: "Freigegeben",
+            rejected: "Abgelehnt"
+        };
+
+        const status = element(
+            "span",
+            "status " + item.status,
+            statusNames[item.status] || item.status
+        );
+
+        content.append(
+            status,
+            element("h3", "", item.title),
+            element("p", "muted", item.description),
+            element("p", "", "Fundort: " + item.location),
+            element("p", "muted", "Gefunden am: " + formatDate(item.found_at)),
+            element("p", "muted", "Eingereicht am: " + formatDateTime(item.created_at))
+        );
+
+        const actions = element("div", "actions");
+
+        if (item.status !== "approved") {
+            const approve = element("button", "approve", "Freigeben");
+
+            approve.addEventListener("click", () =>
+                changeStatus(item, "approved")
+            );
+
+            actions.appendChild(approve);
+        }
+
+        if (item.status !== "rejected") {
+            const reject = element("button", "reject", "Ablehnen");
+
+            reject.addEventListener("click", () =>
+                changeStatus(item, "rejected")
+            );
+
+            actions.appendChild(reject);
+        }
+
+        const remove = element("button", "delete", "Löschen");
+
+        remove.addEventListener("click", () => deleteItem(item));
+
+        actions.appendChild(remove);
+        content.appendChild(actions);
+
+        card.append(img, content);
+        adminItems.appendChild(card);
+
+        try {
+            const { data: signedData, error: signedError } =
+                await db.storage
+                    .from("fundgrube")
+                    .createSignedUrl(item.image_path, 300);
+
+            if (signedError || !signedData?.signedUrl) {
+                img.alt = "Foto konnte nicht geladen werden";
+            } else {
+                img.src = signedData.signedUrl;
+            }
+
+        } catch (error) {
+            console.error("Admin-Bildfehler:", error);
+            img.alt = "Foto konnte nicht geladen werden";
+        }
+    }
+}
+
+
+/* =====================================
+   ADMIN: STATUS ÄNDERN
+===================================== */
+
+async function changeStatus(item, newStatus) {
+    const action = newStatus === "approved"
+        ? "freigeben"
+        : "ablehnen";
+
+    if (!confirm("Möchtest du diese Fundmeldung wirklich " + action + "?")) {
+        return;
+    }
+
+    try {
+        const { error } = await db
+            .from("fundgrube_items")
+            .update({ status: newStatus })
+            .eq("id", item.id);
+
+        if (error) throw error;
+
+        await loadAdminItems();
+
+    } catch (error) {
+        alert("Fehler beim Ändern: " + error.message);
+    }
+}
+
+
+/* =====================================
+   ADMIN: FUNDMELDUNG LÖSCHEN
+===================================== */
+
+async function deleteItem(item) {
+    if (!confirm(
+        "Möchtest du diese Fundmeldung und ihr Foto endgültig löschen?"
+    )) {
+        return;
+    }
+
+    try {
+        // Erst das Foto löschen, solange der Datenbankeintrag noch existiert.
+        const { error: storageError } = await db.storage
+            .from("fundgrube")
+            .remove([item.image_path]);
+
+        if (storageError) throw storageError;
+
+        const { error: deleteError } = await db
+            .from("fundgrube_items")
+            .delete()
+            .eq("id", item.id);
+
+        if (deleteError) {
+            throw new Error(
+                "Das Foto wurde entfernt, aber der Datenbankeintrag konnte nicht gelöscht werden: " +
+                deleteError.message
+            );
+        }
+
+        await loadAdminItems();
+
+    } catch (error) {
+        alert("Fehler beim Löschen: " + error.message);
+    }
+}
+
+
+/* =====================================
+   ADMIN: FILTER
+===================================== */
+
+document.querySelectorAll("[data-filter]").forEach(button => {
+    button.addEventListener("click", () => {
+        currentFilter = button.dataset.filter;
+
+        document.querySelectorAll("[data-filter]").forEach(tab => {
+            tab.classList.toggle("active", tab === button);
+        });
+
+        renderAdminItems();
+    });
+});
+
+document.getElementById("refreshButton").addEventListener(
+    "click",
+    loadAdminItems
+);
+
+document.getElementById("logoutButton").addEventListener(
+    "click",
+    async () => {
+        await db.auth.signOut();
+        currentItems = [];
+        showLogin();
+    }
+);
+
+
+/* =====================================
+   SITZUNG UND START
+===================================== */
+
+db.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+        currentItems = [];
+
+        if (location.hash.toLowerCase() === "#admin") {
+            showLogin();
+        }
+    }
+});
+
+updateView();
+
+</script>
+
+<script src="/assets/navigation.js"></script>
+
+</body>
+</html>
