@@ -221,7 +221,7 @@
 
     const currentPath = normalizePath(location.pathname);
 
-    let menuHTML = 
+    let menuHTML = `
       <div class="fkg-sidebar-header">
         <a href="/" class="fkg-sidebar-logo" style="text-decoration:none">
           FKG<span>.</span>STUDENTS
@@ -229,16 +229,16 @@
         <button class="fkg-close-menu" type="button"
                 aria-label="Menü schließen">×</button>
       </div>
-    ;
+    `;
 
     navigation.forEach((section, sectionIndex) => {
-      menuHTML += 
+      menuHTML += `
         <div class="fkg-sidebar-section">
           <div class="fkg-sidebar-heading">${section.title}</div>
-      ;
+      `;
 
       section.items.forEach((item, itemIndex) => {
-        const submenuId = fkg-submenu-${sectionIndex}-${itemIndex};
+        const submenuId = `fkg-submenu-${sectionIndex}-${itemIndex}`;
 
         const hasActiveChild = item.children.some(
           child => normalizePath(child.url) === currentPath
@@ -261,19 +261,19 @@
         item.children.forEach(child => {
           const isActive = normalizePath(child.url) === currentPath;
 
-          menuHTML += 
+          menuHTML += `
             <a href="${child.url}"
                class="${isActive ? "active" : ""}"
                ${isActive ? 'aria-current="page"' : ""}>
               ${child.label}
             </a>
-          ;
+          `;
         });
 
-        menuHTML += </div>;
+        menuHTML += `</div>`;
       });
 
-      menuHTML += </div>;
+      menuHTML += `</div>`;
     });
 
     sidebar.innerHTML = menuHTML;
