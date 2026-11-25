@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>Streitschlichter FKG – Startseite</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #10131c;
+  --panel: #191e2b;
+  --panel2: #222a3a;
+  --text: #f3f5fa;
+  --muted: #a2acc0;
+  --accent: #7795ff;
+  --border: #30394c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 18px 7%;
+  background: rgba(16, 19, 28, 0.96);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.menu-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 27px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.header-spacer {
+  flex: 1;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+main {
+  width: min(1000px, 90%);
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 105px 0 90px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+h1 {
+  font-size: clamp(38px, 8vw, 65px);
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin: 20px 0;
+  max-width: 750px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 620px;
+}
+
+.primary-button {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 21px;
+  border-radius: 10px;
+  background: #5878ec;
+  color: white;
+  text-decoration: none;
+  font-weight: 650;
+  transition: opacity 0.2s;
+}
+
+.primary-button:hover {
+  opacity: 0.85;
+}
+
+.section {
+  padding: 45px 0;
+}
+
+.section h2 {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+
+.section-intro {
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 25px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.card-icon {
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  margin: 0 0 9px;
+  font-size: 19px;
+}
+
+.card p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+  font-size: 14px;
+}
+
+.info-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px;
+  margin: 25px 0 60px;
+}
+
+.info-panel p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 35px 15px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 16px 5%;
+  }
+
+  .header-info {
+    display: none;
+  }
+
+  .hero {
+    padding: 75px 0 60px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button
+    class="menu-button"
+    id="menuButton"
+    type="button"
+    aria-label="Menü öffnen"
+    aria-expanded="false">
+    ☰
+  </button>
+
+  <div class="logo">Streitschlichter<span>.</span></div>
+
+  <div class="header-spacer"></div>
+
+  <div class="small header-info">FKG Würzburg</div>
+</header>
+
+<main>
+
+  <section class="hero" id="start">
+    <div class="eyebrow">FRIEDRICH-KOENIG-GYMNASIUM</div>
+
+    <h1>Konflikte lösen.<br>Gemeinsam wachsen.</h1>
+
+    <p class="subtitle">
+      Willkommen auf der Website der Streitschlichter!
+      Wir unterstützen Schülerinnen und Schüler dabei,
+      Konflikte fair und gemeinsam zu lösen.
+    </p>
+
+    <a href="#ueber-uns" class="primary-button">
+      Mehr über uns erfahren →
+    </a>
+  </section>
+
+  <section class="section" id="ueber-uns">
+    <h2>Wer sind wir?</h2>
+
+    <p class="section-intro">
+      Wir sind die Streitschlichter des Friedrich-König-Gymnasiums.
+      Unser Ziel ist es, bei Konflikten zu helfen und gemeinsam
+      faire Lösungen zu finden.
+    </p>
+
+    <div class="info-panel">
+      <h3>Gemeinsam statt gegeneinander.</h3>
+      <p>
+        Bei uns können Schülerinnen und Schüler ihre Sichtweisen
+        schildern. Wir hören zu, unterstützen das Gespräch und
+        helfen dabei, eine gemeinsame Lösung zu finden.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Entdecke unsere Seite</h2>
+
+    <p class="section-intro">
+      Hier findest du alle wichtigen Informationen und Möglichkeiten,
+      mit uns in Kontakt zu treten.
+    </p>
+
+    <div class="cards">
+
+      <a class="card"
+         href="/Streitschlichter/Aufgaben/">
+        <div class="card-icon">📋</div>
+        <h3>Unsere Aufgaben</h3>
+        <p>
+          Erfahre mehr über unsere Tätigkeiten und Aufgaben
+          als Streitschlichter.
+        </p>
+      </a>
+
+      <a class="card"
+         href="/Streitschlichter/Kontakt/">
+        <div class="card-icon">✉</div>
+        <h3>Kontakt</h3>
+        <p>
+          Du möchtest uns etwas mitteilen?
+          Hier kannst du uns privat eine Nachricht schicken.
+        </p>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  · Streitschlichter FKG ·
+</footer>
+
+<!-- Gemeinsame Navigation laden -->
+<script src="/assets/navigation.js"></script>
+
+</body>
+</html>
