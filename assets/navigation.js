@@ -1,3 +1,4 @@
+
 (() => {
   "use strict";
 
@@ -70,6 +71,8 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         box-sizing: border-box;
         visibility: hidden;
+        display: flex;
+        flex-direction: column;
       }
 
       #fkg-sidebar.open {
@@ -87,6 +90,7 @@
         align-items: center;
         padding-bottom: 25px;
         border-bottom: 1px solid rgba(255,255,255,.09);
+        flex-shrink: 0;
       }
 
       .fkg-sidebar-logo {
@@ -199,6 +203,29 @@
         color: #6598ff;
       }
 
+      .fkg-sidebar-contact {
+        margin-top: auto;
+        padding-top: 22px;
+        margin-bottom: 5px;
+        border-top: 1px solid rgba(255,255,255,.09);
+        color: #a0a9bd;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .fkg-sidebar-contact a {
+        display: inline-block;
+        color: #8eb3ff;
+        text-decoration: none;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+
+      .fkg-sidebar-contact a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+
       #fkg-menu-overlay {
         position: fixed;
         inset: 0;
@@ -284,6 +311,15 @@
 
       menuHTML += `</div>`;
     });
+
+    menuHTML += `
+      <div class="fkg-sidebar-contact">
+        Bei Kontaktanfragen wende dich an:<br>
+        <a href="mailto:kontakt@fkgstudents.dpdns.org">
+          kontakt@fkgstudents.dpdns.org
+        </a>
+      </div>
+    `;
 
     sidebar.innerHTML = menuHTML;
 
