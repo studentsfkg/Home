@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+<title>Stundenpläne – FKG Students</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #10131c;
+  --panel: #191e2b;
+  --panel-hover: #222a3b;
+  --text: #f4f6fc;
+  --muted: #a0a9bd;
+  --blue: #6598ff;
+  --border: rgba(255,255,255,.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header {
+  height: 72px;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(16,19,28,.94);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: var(--blue);
+}
+
+.sidebar {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 290px;
+  padding: 24px 18px;
+  background: #151a26;
+  border-right: 1px solid var(--border);
+  transform: translateX(-105%);
+  transition: transform .25s ease;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.close-button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.menu-label {
+  margin: 25px 10px 10px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.menu-link,
+.menu-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-link:hover,
+.menu-toggle:hover {
+  background: var(--panel-hover);
+}
+
+.menu-link.active {
+  background: rgba(101,152,255,.14);
+  color: var(--blue);
+}
+
+.menu-toggle .arrow {
+  margin-left: auto;
+  transition: transform .2s;
+}
+
+.menu-toggle.expanded .arrow {
+  transform: rotate(90deg);
+}
+
+.submenu {
+  display: none;
+  margin-left: 17px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+}
+
+.submenu.open {
+  display: block;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0,0,0,.55);
+}
+
+.overlay.show {
+  display: block;
+}
+
+main {
+  width: min(1200px, 100%);
+  margin: auto;
+  padding: 55px 28px 80px;
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -1.5px;
+}
+
+.intro {
+  max-width: 650px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.selector-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 35px;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.selector-panel label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+select {
+  min-width: 190px;
+  padding: 12px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #222a3b;
+  color: white;
+  font: inherit;
+  font-size: 15px;
+}
+
+.school-end {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.school-end strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--text);
+  font-size: 20px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 38px 0 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.day {
+  min-width: 0;
+  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.day h3 {
+  margin: 2px 0 15px;
+  font-size: 15px;
+}
+
+.lesson {
+  margin-bottom: 9px;
+  padding: 11px 10px;
+  border-left: 3px solid var(--blue);
+  border-radius: 8px;
+  background: #252e40;
+  overflow-wrap: anywhere;
+}
+
+.lesson:last-child {
+  margin-bottom: 0;
+}
+
+.lesson-name {
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.lesson-time {
+  margin-top: 5px;
+  color: #d0d8e9;
+  font-size: 11px;
+}
+
+.lesson-detail {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.empty {
+  margin-top: 25px;
+  padding: 45px 20px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.empty .symbol {
+  font-size: 35px;
+}
+
+.empty h2 {
+  margin: 15px 0 8px;
+}
+
+.empty p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.status {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer {
+  padding: 25px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+@media (max-width: 950px) {
+  .week-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  header {
+    padding: 0 16px;
+  }
+
+  main {
+    padding: 38px 16px 60px;
+  }
+
+  .week-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .day {
+    padding: 16px;
+  }
+
+  .selector-panel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  select {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-button" id="menuButton" aria-label="Menü öffnen">☰</button>
+  <a class="logo" href="/">FKG<span>.</span>STUDENTS</a>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <div class="logo">FKG<span>.</span>STUDENTS</div>
+    <button class="close-button" id="closeButton" aria-label="Menü schließen">×</button>
+  </div>
+
+  <div class="menu-label">Deine Projekte</div>
+
+  <button class="menu-toggle" id="streitToggle">
+    ⚖️ Streitschlichter
+    <span class="arrow">›</span>
+  </button>
+
+  <div class="submenu" id="streitSubmenu">
+    <a class="menu-link" href="/Streitschlichter/">Übersicht</a>
+    <a class="menu-link" href="/Streitschlichter/Kontakt/">Kontakt</a>
+    <a class="menu-link" href="/Streitschlichter/Aufgaben/">Aufgaben</a>
+  </div>
+
+  <div class="menu-label">Schulleben</div>
+
+  <button class="menu-toggle expanded" id="schoolToggle">
+    🏫 Schulleben
+    <span class="arrow">›</span>
+  </button>
+
+  <div class="submenu open" id="schoolSubmenu">
+    <a class="menu-link active" href="/Schulleben/Stundenpl%C3%A4ne/">
+      Stundenpläne
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="eyebrow">Schulleben</div>
+  <h1>Stundenpläne</h1>
+
+  <p class="intro">
+    Hier findest du den Stundenplan deiner Klasse.
+    Wähle einfach deine Klasse aus, um den passenden
+    Wochenplan anzuzeigen.
+  </p>
+
+  <section class="selector-panel">
+    <div>
+      <label for="classSelect">Deine Klasse</label>
+      <select id="classSelect">
+        <option value="">Stundenpläne werden geladen ...</option>
+      </select>
+    </div>
+
+    <div class="school-end">
+      Schulschluss für alle Klassen
+      <strong>12:55 Uhr</strong>
+    </div>
+  </section>
+
+  <div id="timetableArea">
+    <div class="empty">
+      <div class="symbol">📚</div>
+      <h2>Stundenpläne werden geladen</h2>
+      <p>Bitte einen Moment warten.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  FKG Students · Schulleben
+</footer>
+
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+function openMenu() {
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+}
+
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+}
+
+document.getElementById("menuButton").addEventListener("click", openMenu);
+document.getElementById("closeButton").addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeMenu();
+});
+
+function setupToggle(buttonId, submenuId) {
+  const button = document.getElementById(buttonId);
+  const submenu = document.getElementById(submenuId);
+
+  button.addEventListener("click", () => {
+    button.classList.toggle("expanded");
+    submenu.classList.toggle("open");
+  });
+}
+
+setupToggle("streitToggle", "streitSubmenu");
+setupToggle("schoolToggle", "schoolSubmenu");
+
+const classSelect = document.getElementById("classSelect");
+const timetableArea = document.getElementById("timetableArea");
+
+const dayNames = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag"
+];
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function showEmpty(message) {
+  timetableArea.innerHTML = `
+    <div class="empty">
+      <div class="symbol">📚</div>
+      <h2>Noch kein Stundenplan verfügbar</h2>
+      <p>${escapeHTML(message)}</p>
+    </div>
+  `;
+}
+
+function renderTimetable(className, timetable) {
+  if (!timetable || !timetable.available || !timetable.days) {
+    showEmpty("Für diese Klasse wurde noch kein Stundenplan hinterlegt.");
+    return;
+  }
+
+  let html = `
+    <div class="section-heading">
+      <h2>Stundenplan ${escapeHTML(className)}</h2>
+      <span class="status">Montag – Freitag</span>
+    </div>
+    <div class="week-grid">
+  `;
+
+  dayNames.forEach(dayName => {
+    const lessons = timetable.days[dayName] || [];
+
+    html += `
+      <section class="day">
+        <h3>${dayName}</h3>
+    `;
+
+    if (lessons.length === 0) {
+      html += `<p class="status">Kein Unterricht eingetragen</p>`;
+    }
+
+    lessons.forEach(lesson => {
+      html += `
+        <article class="lesson">
+          <div class="lesson-name">${escapeHTML(lesson.subject)}</div>
+          <div class="lesson-time">
+            ${escapeHTML(lesson.start)} – ${escapeHTML(lesson.end)}
+          </div>
+          <div class="lesson-detail">
+            ${lesson.room ? "Raum: " + escapeHTML(lesson.room) : ""}
+            ${lesson.room && lesson.teacher ? " · " : ""}
+            ${lesson.teacher ? escapeHTML(lesson.teacher) : ""}
+          </div>
+        </article>
+      `;
+    });
+
+    html += `</section>`;
+  });
+
+  html += `</div>`;
+  timetableArea.innerHTML = html;
+}
+
+async function loadTimetables() {
+  try {
+    const response = await fetch("./stundenplaene.json");
+
+    if (!response.ok) {
+      throw new Error("Die Stundenplandatei konnte nicht geladen werden.");
+    }
+
+    const data = await response.json();
+    const classes = data.classes || {};
+    const classNames = Object.keys(classes).sort(
+      (a, b) => a.localeCompare(b, "de", { numeric: true })
+    );
+
+    classSelect.innerHTML = "";
+
+    if (classNames.length === 0) {
+      classSelect.innerHTML = '<option value="">Keine Klassen vorhanden</option>';
+      showEmpty("Es wurden noch keine Klassen eingerichtet.");
+      return;
+    }
+
+    classNames.forEach(className => {
+      const option = document.createElement("option");
+      option.value = className;
+      option.textContent = className;
+      classSelect.appendChild(option);
+    });
+
+    const initialClass = classNames.includes("9a") ? "9a" : classNames[0];
+    classSelect.value = initialClass;
+    renderTimetable(initialClass, classes[initialClass]);
+
+    classSelect.addEventListener("change", () => {
+      renderTimetable(classSelect.value, classes[classSelect.value]);
+    });
+
+  } catch (error) {
+    classSelect.innerHTML = '<option value="">Fehler beim Laden</option>';
+    showEmpty("Die Stundenpläne konnten nicht geladen werden. Bitte prüfe die Datei stundenplaene.json.");
+    console.error(error);
+  }
+}
+
+loadTimetables();
+</script>
+<script src="/assets/navigation.js"></script>
+</body>
+</html>
