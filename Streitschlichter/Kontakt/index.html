@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>Kontakt Streitschlichter – Schreib uns</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #10131c;
+  --panel: #191e2b;
+  --panel2: #222a3a;
+  --text: #f3f5fa;
+  --muted: #a2acc0;
+  --accent: #7795ff;
+  --border: #30394c;
+  --danger: #ff7474;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+  padding: 22px 7%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.menu-button {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: var(--text);
+  background: transparent;
+  padding: 9px 0;
+  font-size: 25px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  color: var(--accent);
+  background: transparent;
+}
+
+.header-small {
+  margin-left: auto;
+}
+
+main {
+  width: min(650px, 90%);
+  margin: 75px auto;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+label {
+  display: block;
+  margin: 17px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 19px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.primary {
+  width: 100%;
+  margin-top: 20px;
+  color: white;
+  background: #5878ec;
+}
+
+.primary:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.secondary {
+  color: var(--text);
+  background: var(--panel2);
+}
+
+.delete {
+  color: white;
+  background: #9c3f4b;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.success {
+  color: #79dba5;
+}
+
+.error {
+  color: #ff8585;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.admin-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.message {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 13px;
+  padding: 18px;
+  margin-top: 15px;
+}
+
+.message.unread {
+  border-left: 4px solid var(--accent);
+}
+
+.message-meta {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 8px 0 14px;
+}
+
+.message-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+.message-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 17px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 35px 15px;
+  font-size: 12px;
+}
+
+a {
+  color: var(--accent);
+}
+
+@media (max-width: 500px) {
+  header {
+    padding: 18px 5%;
+  }
+
+  main {
+    margin: 45px auto;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-button" id="menuButton"
+    aria-label="Menü öffnen" aria-expanded="false">☰</button>
+
+  <div class="logo">Kontakt<span>.</span></div>
+
+  <div class="small header-small">Streitschlichter FKG</div>
+</header>
+
+<main>
+
+<section id="publicView">
+  <h1>Schreib uns.</h1>
+
+  <p class="subtitle">
+    Hier kannst du uns direkt eine Nachricht schicken.
+    Du brauchst dafür kein Konto.
+  </p>
+
+  <div class="panel">
+    <form id="messageForm">
+
+      <label for="senderName">Dein Name</label>
+
+      <input
+        id="senderName"
+        type="text"
+        maxlength="80"
+        placeholder="Name, Nachname und Klasse"
+      >
+
+      <label for="message">Deine Nachricht</label>
+
+      <textarea
+        id="message"
+        maxlength="5000"
+        required
+        placeholder="Schreibe, worum es geht, z. B. Wie viele sind beteiligt. Halte dich kurz!"
+      ></textarea>
+
+      <button class="primary" id="sendButton" type="submit">
+        Nachricht absenden
+      </button>
+
+      <div id="sendStatus" class="status" role="status"></div>
+
+    </form>
+  </div>
+</section>
+
+<section id="adminView" class="hidden">
+
+  <h1>Owner-Bereich</h1>
+
+  <p class="subtitle">Dein privater Posteingang.</p>
+
+  <div id="loginPanel" class="panel">
+
+    <h2>Anmelden</h2>
+
+    <form id="loginForm">
+
+      <label for="email">E-Mail-Adresse</label>
+
+      <input
+        id="email"
+        type="email"
+        required
+        autocomplete="username"
+      >
+
+      <label for="password">Passwort</label>
+
+      <input
+        id="password"
+        type="password"
+        required
+        autocomplete="current-password"
+      >
+
+      <button class="primary" id="loginButton" type="submit">
+        Anmelden
+      </button>
+
+      <div id="loginStatus" class="status" role="status"></div>
+
+    </form>
+  </div>
+
+  <div id="inboxPanel" class="hidden">
+
+    <div class="admin-head">
+      <h2>Posteingang</h2>
+      <button class="secondary" id="logoutButton">Abmelden</button>
+    </div>
+
+    <button class="secondary" id="refreshButton">Aktualisieren</button>
+
+    <div id="inboxStatus" class="status" role="status"></div>
+
+    <div id="messages"></div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  · Kontakt · Private Nachrichtenplattform ·
+</footer>
+
+<!-- SUPABASE UND KONTAKTFUNKTIONEN -->
+
+<script type="module">
+import { createClient } from
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+// ============================================
+// SUPABASE VERBINDUNG
+// ============================================
+
+const SUPABASE_URL =
+  "https://rsshyrnohmiotwohspvw.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_olgYybAcmvNySIl_-xyknw_41MZ_XXR";
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// ============================================
+// ELEMENTE
+// ============================================
+
+const publicView = document.getElementById("publicView");
+const adminView = document.getElementById("adminView");
+const loginPanel = document.getElementById("loginPanel");
+const inboxPanel = document.getElementById("inboxPanel");
+
+const messageForm = document.getElementById("messageForm");
+const sendButton = document.getElementById("sendButton");
+const sendStatus = document.getElementById("sendStatus");
+
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const loginStatus = document.getElementById("loginStatus");
+
+const inboxStatus = document.getElementById("inboxStatus");
+const messagesContainer = document.getElementById("messages");
+
+// ============================================
+// HILFSFUNKTIONEN
+// ============================================
+
+function status(element, message, type = "") {
+  element.textContent = message;
+  element.className = "status " + type;
+}
+
+function setAdminVisibility(isLoggedIn) {
+  loginPanel.classList.toggle("hidden", isLoggedIn);
+  inboxPanel.classList.toggle("hidden", !isLoggedIn);
+}
+
+function escapeText(value) {
+  return String(value ?? "");
+}
+
+function formatDate(value) {
+  return new Date(value).toLocaleString("de-DE", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+// ============================================
+// SEITENNAVIGATION ZUM OWNER-BEREICH
+// ============================================
+
+function updateView() {
+  const isAdminPage =
+    window.location.hash === "#admin";
+
+  publicView.classList.toggle("hidden", isAdminPage);
+  adminView.classList.toggle("hidden", !isAdminPage);
+
+  if (isAdminPage) {
+    checkSession();
+  }
+}
+
+window.addEventListener("hashchange", updateView);
+
+// ============================================
+// NACHRICHT ABSENDEN
+// ============================================
+
+messageForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name =
+    document.getElementById("senderName").value.trim();
+
+  const message =
+    document.getElementById("message").value.trim();
+
+  if (!message) {
+    status(sendStatus, "Bitte gib eine Nachricht ein.", "error");
+    return;
+  }
+
+  sendButton.disabled = true;
+  sendButton.textContent = "Wird gesendet ...";
+  status(sendStatus, "");
+
+  try {
+    const { error } = await supabase
+      .from("messages")
+      .insert({
+        name: name || null,
+        message: message
+      });
+
+    if (error) throw error;
+
+    messageForm.reset();
+
+    status(
+      sendStatus,
+      "Deine Nachricht wurde erfolgreich abgeschickt!",
+      "success"
+    );
+
+  } catch (error) {
+    console.error(error);
+
+    status(
+      sendStatus,
+      "Die Nachricht konnte nicht gesendet werden. Bitte versuche es später erneut.",
+      "error"
+    );
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Nachricht absenden";
+  }
+});
+
+// ============================================
+// OWNER ANMELDEN
+// ============================================
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Anmeldung läuft ...";
+  status(loginStatus, "");
+
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    status(loginStatus, "Erfolgreich angemeldet.", "success");
+
+    await checkSession();
+
+  } catch (error) {
+    console.error(error);
+
+    status(
+      loginStatus,
+      "Anmeldung fehlgeschlagen. Bitte überprüfe deine Zugangsdaten und Owner-Berechtigung.",
+      "error"
+    );
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "Anmelden";
+  }
+});
+
+// ============================================
+// SESSION UND OWNER-ZUGRIFF
+// ============================================
+
+async function checkSession() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error || !data.session) {
+    setAdminVisibility(false);
+    return;
+  }
+
+  setAdminVisibility(true);
+  await loadMessages();
+}
+
+supabase.auth.onAuthStateChange((event, session) => {
+  if (!session) {
+    setAdminVisibility(false);
+    messagesContainer.replaceChildren();
+  }
+});
+
+// ============================================
+// NACHRICHTEN LADEN
+// ============================================
+
+async function loadMessages() {
+  status(inboxStatus, "Nachrichten werden geladen ...");
+  messagesContainer.replaceChildren();
+
+  try {
+    const { data, error } = await supabase
+      .from("messages")
+      .select("id, name, message, created_at, is_read")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      status(inboxStatus, "Du hast noch keine Nachrichten.");
+      return;
+    }
+
+    status(
+      inboxStatus,
+      data.length + " Nachricht(en) gefunden.",
+      "success"
+    );
+
+    for (const item of data) {
+      const card = document.createElement("article");
+      card.className = "message" + (item.is_read ? "" : " unread");
+
+      const title = document.createElement("strong");
+      title.textContent = item.name
+        ? item.name
+        : "Anonymer Absender";
+
+      const meta = document.createElement("div");
+      meta.className = "message-meta";
+      meta.textContent = formatDate(item.created_at) +
+        (item.is_read ? " · Gelesen" : " · Ungelesen");
+
+      const content = document.createElement("div");
+      content.className = "message-content";
+      content.textContent = escapeText(item.message);
+
+      const actions = document.createElement("div");
+      actions.className = "message-actions";
+
+      if (!item.is_read) {
+        const readButton = document.createElement("button");
+        readButton.className = "secondary";
+        readButton.textContent = "Als gelesen markieren";
+
+        readButton.addEventListener("click", async () => {
+          await changeReadStatus(item.id);
+        });
+
+        actions.appendChild(readButton);
+      }
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "delete";
+      deleteButton.textContent = "Löschen";
+
+      deleteButton.addEventListener("click", async () => {
+        if (!confirm("Möchtest du diese Nachricht wirklich löschen?")) {
+          return;
+        }
+
+        await deleteMessage(item.id);
+      });
+
+      actions.appendChild(deleteButton);
+
+      card.append(title, meta, content, actions);
+      messagesContainer.appendChild(card);
+    }
+
+  } catch (error) {
+    console.error(error);
+
+    status(
+      inboxStatus,
+      "Nachrichten konnten nicht geladen werden. Prüfe deine Owner-Berechtigung.",
+      "error"
+    );
+  }
+}
+
+// ============================================
+// ALS GELESEN MARKIEREN
+// ============================================
+
+async function changeReadStatus(id) {
+  const { error } = await supabase
+    .from("messages")
+    .update({ is_read: true })
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    status(inboxStatus, "Änderung fehlgeschlagen.", "error");
+    return;
+  }
+
+  await loadMessages();
+}
+
+// ============================================
+// NACHRICHT LÖSCHEN
+// ============================================
+
+async function deleteMessage(id) {
+  const { error } = await supabase
+    .from("messages")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    status(inboxStatus, "Löschen fehlgeschlagen.", "error");
+    return;
+  }
+
+  await loadMessages();
+}
+
+// ============================================
+// ABMELDEN
+// ============================================
+
+document.getElementById("logoutButton")
+  .addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      status(inboxStatus, "Abmeldung fehlgeschlagen.", "error");
+      return;
+    }
+
+    setAdminVisibility(false);
+    messagesContainer.replaceChildren();
+    window.location.hash = "";
+  });
+
+// ============================================
+// AKTUALISIEREN
+// ============================================
+
+document.getElementById("refreshButton")
+  .addEventListener("click", loadMessages);
+
+// ============================================
+// START
+// ============================================
+
+updateView();
+
+</script>
+
+<!-- ZENTRALE SIDEBAR -->
+
+<script src="/assets/navigation.js"></script>
+
+</body>
+</html>
