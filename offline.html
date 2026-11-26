@@ -5,48 +5,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1020">
+  <meta name="apple-mobile-web-app-title" content="FKG Students">
+
   <title>Offline – FKG Students</title>
+
+  <!-- Gespeicherte persönliche Farbeinstellungen laden -->
+  <script src="/assets/theme.js"></script>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       display: grid;
       place-items: center;
       padding: 24px;
-      background: #0b1020;
-      color: #f5f7ff;
+      background: var(--bg, #0b1020);
+      color: var(--text, #f5f7ff);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       text-align: center;
     }
+
     main {
+      width: 100%;
       max-width: 420px;
       padding: 35px;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 24px;
-      background: #111a2d;
+      border: 1px solid var(--border, rgba(255,255,255,.12));
+      border-radius: 18px;
+      background: var(--panel, #111a2d);
+      color: var(--text, #f5f7ff);
+      box-shadow: 0 15px 45px rgba(0,0,0,.12);
     }
-    h1 { font-size: 27px; }
-    p { color: #a4b0c7; line-height: 1.7; }
+
+    h1 {
+      font-size: 27px;
+      color: var(--text, #f5f7ff);
+    }
+
+    p {
+      color: var(--muted, #a4b0c7);
+      line-height: 1.7;
+    }
+
     a {
       display: inline-block;
       margin-top: 15px;
       padding: 12px 20px;
       border-radius: 12px;
-      background: #4f83f1;
-      color: white;
+      background: var(--user-accent, #4f83f1);
+      color: #ffffff;
       text-decoration: none;
       font-weight: 700;
+      transition: filter .2s;
+    }
+
+    a:hover {
+      filter: brightness(1.1);
+    }
+
+    [data-style="minimal"] main {
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    [data-style="glass"] main {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    [data-style="modern"] main {
+      border-radius: 18px;
     }
   </style>
 </head>
+
 <body>
   <main>
     <h1>Du bist gerade offline.</h1>
+
     <p>
       FKG Students kann diese Seite momentan nicht laden.
       Prüfe deine Internetverbindung und versuche es erneut.
     </p>
+
     <a href="/">Erneut versuchen</a>
   </main>
 </body>
