@@ -2,13 +2,91 @@
 (() => {
   "use strict";
 
-  // Theme-System auf jeder Seite mit dieser Navigation laden.
+  // ==========================================
+  // FKG STUDENTS – PWA-EINRICHTUNG
+  // ==========================================
+
+  // Web-App-Manifest einbinden
+  if (!document.querySelector('link[rel="manifest"]')) {
+    const manifest = document.createElement("link");
+    manifest.rel = "manifest";
+    manifest.href = "/manifest.webmanifest";
+    document.head.appendChild(manifest);
+  }
+
+  // iOS- und iPadOS-Unterstützung
+  const appleMetaTags = [
+    {
+      name: "apple-mobile-web-app-capable",
+      content: "yes"
+    },
+    {
+      name: "apple-mobile-web-app-status-bar-style",
+      content: "black-translucent"
+    },
+    {
+      name: "apple-mobile-web-app-title",
+      content: "FKG Students"
+    }
+  ];
+
+  appleMetaTags.forEach(item => {
+    let meta = document.querySelector(
+      `meta[name="${item.name}"]`
+    );
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = item.name;
+      document.head.appendChild(meta);
+    }
+
+    meta.content = item.content;
+  });
+
+  // iOS-App-Icon einbinden
+  if (!document.querySelector('link[rel="apple-touch-icon"]')) {
+    const appleIcon = document.createElement("link");
+    appleIcon.rel = "apple-touch-icon";
+    appleIcon.href = "/assets/apple-touch-icon.png";
+    document.head.appendChild(appleIcon);
+  }
+
+  // Theme-Farbe für Browser und App
+  if (!document.querySelector('meta[name="theme-color"]')) {
+    const themeColor = document.createElement("meta");
+    themeColor.name = "theme-color";
+    themeColor.content = "#0b1020";
+    document.head.appendChild(themeColor);
+  }
+
+  // Service Worker registrieren
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js")
+        .catch(error => {
+          console.error(
+            "FKG Students: Service Worker konnte nicht registriert werden.",
+            error
+          );
+        });
+    });
+  }
+
+  // ==========================================
+  // THEME-SYSTEM LADEN
+  // ==========================================
+
   if (!document.querySelector('script[data-fkg-theme]')) {
     const themeScript = document.createElement("script");
     themeScript.src = "/assets/theme.js";
     themeScript.dataset.fkgTheme = "true";
     document.head.appendChild(themeScript);
   }
+
+  // ==========================================
+  // NAVIGATION
+  // ==========================================
 
   const navigation = [
     {
