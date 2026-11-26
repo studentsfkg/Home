@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "fkg-students-v1";
+const CACHE_NAME = "fkg-students-v2";
 
 const APP_FILES = [
   "/",
