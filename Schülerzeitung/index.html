@@ -1150,6 +1150,14 @@ async function deleteArticle(article) {
     }
 
     try {
+        if (article.image_path) {
+            const { error: imageError } = await db.storage
+                .from(IMAGE_BUCKET)
+                .remove([article.image_path]);
+
+            if (imageError) throw imageError;
+        }
+
         const { error } = await db
             .from(ARTICLE_TABLE)
             .delete()
