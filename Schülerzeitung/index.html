@@ -1,0 +1,1201 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+
+<title>Schülerzeitung – FKG Students</title>
+<meta name="description" content="Die digitale Schülerzeitung des Friedrich-Koenig-Gymnasiums Würzburg.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+    color-scheme: dark;
+    --bg: #10131c;
+    --panel: #191e2b;
+    --panel2: #222938;
+    --text: #f4f5f8;
+    --muted: #a6adbd;
+    --accent: #7c9cff;
+    --border: #30394b;
+    --green: #65d6a0;
+    --red: #ff8585;
+    --yellow: #f5ca75;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+header {
+    padding: 22px 20px;
+    background: #141925;
+    border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+    max-width: 1050px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.brand {
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.brand span {
+    color: var(--accent);
+}
+
+.menu-button {
+    order: -1;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+main {
+    max-width: 1050px;
+    margin: 35px auto;
+    padding: 0 18px;
+}
+
+.hero {
+    padding: 35px 25px;
+    background: linear-gradient(135deg, #202c47, #191e2b);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 6vw, 43px);
+    margin: 0 0 12px;
+}
+
+.hero p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 650px;
+}
+
+.section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 24px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 23px;
+}
+
+.description, .muted {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: 600;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: white;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+input:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+input[type="file"] {
+    font-size: 14px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.primary, .secondary, .approve, .reject, .delete {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 15px;
+    font-weight: 700;
+}
+
+.primary {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: white;
+    border: 1px solid var(--border);
+}
+
+.approve {
+    background: #174432;
+    color: var(--green);
+}
+
+.reject {
+    background: #49391b;
+    color: var(--yellow);
+}
+
+.delete {
+    background: #472323;
+    color: var(--red);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.message {
+    display: none;
+    padding: 13px;
+    margin-top: 16px;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.message.success {
+    display: block;
+    background: #15372c;
+    color: var(--green);
+}
+
+.message.error {
+    display: block;
+    background: #402323;
+    color: var(--red);
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 17px;
+}
+
+.item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+    background: #141925;
+}
+
+.item-content {
+    padding: 16px;
+}
+
+.item h3 {
+    margin: 0 0 9px;
+    overflow-wrap: anywhere;
+}
+
+.item p {
+    color: var(--muted);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.item-date {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 15px;
+    font-size: 13px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 18px 0;
+}
+
+.tab {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 9px;
+    padding: 10px 13px;
+}
+
+.tab.active {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.admin-item {
+    display: grid;
+    grid-template-columns: minmax(160px, 230px) 1fr;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 11px;
+    background: var(--panel2);
+}
+
+.admin-item h3 {
+    margin: 0 0 10px;
+}
+
+.admin-item p {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--panel2);
+    margin-bottom: 10px;
+}
+
+.status.pending {
+    color: var(--yellow);
+}
+
+.status.approved {
+    color: var(--green);
+}
+
+.status.rejected {
+    color: var(--red);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+@media(max-width:650px) {
+    main {
+        margin-top: 20px;
+    }
+
+    .section {
+        padding: 18px;
+    }
+
+    .admin-item {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-item img {
+        height: 220px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="brand">FKG <span>Students</span></div>
+        <button class="menu-button" id="menuButton" aria-label="Menü öffnen">☰</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- ÖFFENTLICHER BEREICH -->
+
+    <div id="publicView">
+
+        <section class="hero">
+            <h1>Schülerzeitung</h1>
+            <p>
+                Was passiert an unserer Schule?
+                Hier findest du Neuigkeiten, Berichte und Geschichten
+                aus dem Schulleben – geschrieben von Schülerinnen und Schülern.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Beitrag einreichen</h2>
+
+            <p class="description">
+                Du möchtest etwas veröffentlichen?
+                Reiche deinen Beitrag ein. Die Redaktion prüft ihn,
+                bevor er für alle sichtbar wird.
+            </p>
+
+            <form id="articleForm">
+
+                <label for="title">Überschrift</label>
+                <input
+                    id="title"
+                    type="text"
+                    maxlength="150"
+                    placeholder="Titel deines Beitrags"
+                    required
+                >
+
+                <label for="author">Name oder Kürzel (optional)</label>
+                <input
+                    id="author"
+                    type="text"
+                    maxlength="80"
+                    placeholder="Wie soll dein Beitrag gekennzeichnet werden?"
+                >
+
+                <label for="content">Dein Beitrag</label>
+                <textarea
+                    id="content"
+                    maxlength="15000"
+                    placeholder="Schreibe hier deinen Artikel ..."
+                    required
+                ></textarea>
+
+                <label for="photo">Titelbild (optional)</label>
+                <input
+                    id="photo"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+                <p class="description">
+                    Erlaubte Formate: JPG, PNG und WebP.
+                    Maximale Dateigröße: 3 MB.
+                </p>
+
+                <button
+                    class="primary full"
+                    id="submitButton"
+                    type="submit"
+                >
+                    Beitrag einreichen
+                </button>
+
+                <div id="formMessage" class="message" role="status"></div>
+
+            </form>
+        </section>
+
+        <section class="section">
+            <h2>Aktuelle Beiträge</h2>
+
+            <p class="description">
+                Hier erscheinen alle von der Redaktion freigegebenen Beiträge.
+            </p>
+
+            <div id="publicItems" class="items">
+                <div class="empty">Beiträge werden geladen ...</div>
+            </div>
+        </section>
+
+    </div>
+
+
+    <!-- REDAKTIONSBEREICH -->
+
+    <div id="adminView" class="hidden">
+
+        <section class="hero">
+            <h1>Redaktion</h1>
+            <p>
+                Interner Bereich der Schülerzeitung.
+                Hier kannst du eingereichte Beiträge prüfen,
+                freigeben oder ablehnen.
+            </p>
+        </section>
+
+        <section id="loginPanel" class="section">
+            <h2>Redaktions-Anmeldung</h2>
+
+            <p class="description">
+                Melde dich mit deinem bestehenden Supabase-Konto an.
+            </p>
+
+            <form id="loginForm">
+
+                <label for="email">E-Mail-Adresse</label>
+                <input
+                    id="email"
+                    type="email"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="password">Passwort</label>
+                <input
+                    id="password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    class="primary full"
+                    id="loginButton"
+                    type="submit"
+                >
+                    Anmelden
+                </button>
+
+                <div id="loginMessage" class="message" role="status"></div>
+
+            </form>
+        </section>
+
+        <section id="adminPanel" class="hidden">
+
+            <section class="section">
+                <h2>Verwaltung</h2>
+
+                <p class="description" id="adminInfo">
+                    Du bist angemeldet.
+                </p>
+
+                <div class="toolbar">
+                    <button class="secondary" id="refreshButton">
+                        Aktualisieren
+                    </button>
+
+                    <button class="secondary" id="logoutButton">
+                        Abmelden
+                    </button>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Beiträge verwalten</h2>
+
+                <div class="toolbar">
+                    <button class="tab active" data-filter="pending">
+                        Ausstehend
+                    </button>
+
+                    <button class="tab" data-filter="approved">
+                        Freigegeben
+                    </button>
+
+                    <button class="tab" data-filter="rejected">
+                        Abgelehnt
+                    </button>
+
+                    <button class="tab" data-filter="all">
+                        Alle
+                    </button>
+                </div>
+
+                <div id="adminItems">
+                    <div class="empty">Beiträge werden geladen ...</div>
+                </div>
+            </section>
+
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+    FKG Students · Digitale Schülerplattform
+</footer>
+
+
+<script>
+
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+    "https://rsshyrnohmiotwohspvw.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_olgYybAcmvNySIl_-xyknw_41MZ_XXR";
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const ARTICLE_TABLE = "schulnews_articles";
+const IMAGE_BUCKET = "schulnews-images";
+
+
+/* =====================================
+   HILFSFUNKTIONEN
+===================================== */
+
+function element(tag, className, text) {
+    const el = document.createElement(tag);
+
+    if (className) el.className = className;
+    if (text !== undefined) el.textContent = text;
+
+    return el;
+}
+
+function showMessage(target, text, type) {
+    target.textContent = text;
+    target.className = "message " + type;
+}
+
+function formatDateTime(date) {
+    return new Date(date).toLocaleString("de-DE", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
+
+function safeImageUrl(path) {
+    if (!path) return null;
+
+    const { data } = db.storage
+        .from(IMAGE_BUCKET)
+        .getPublicUrl(path);
+
+    return data.publicUrl;
+}
+
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+const publicView = document.getElementById("publicView");
+const adminView = document.getElementById("adminView");
+
+function updateView() {
+    const isAdmin = location.hash.toLowerCase() === "#admin";
+
+    publicView.classList.toggle("hidden", isAdmin);
+    adminView.classList.toggle("hidden", !isAdmin);
+
+    if (isAdmin) {
+        checkAdmin();
+    } else {
+        loadPublicItems();
+    }
+}
+
+window.addEventListener("hashchange", updateView);
+
+
+/* =====================================
+   BEITRAG EINREICHEN
+===================================== */
+
+const articleForm = document.getElementById("articleForm");
+const formMessage = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitButton");
+
+articleForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Wird eingereicht ...";
+    formMessage.className = "message";
+
+    let uploadedPath = null;
+
+    try {
+        const title = document.getElementById("title").value.trim();
+        const author = document.getElementById("author").value.trim();
+        const content = document.getElementById("content").value.trim();
+        const file = document.getElementById("photo").files[0];
+
+        if (!title || !content) {
+            throw new Error("Bitte gib eine Überschrift und einen Beitrag ein.");
+        }
+
+        if (title.length > 150 || content.length > 15000) {
+            throw new Error("Der Beitrag ist zu lang.");
+        }
+
+        if (file) {
+            const extensions = {
+                "image/jpeg": "jpg",
+                "image/png": "png",
+                "image/webp": "webp"
+            };
+
+            if (!extensions[file.type]) {
+                throw new Error("Bitte verwende JPG, PNG oder WebP.");
+            }
+
+            if (file.size > 3 * 1024 * 1024) {
+                throw new Error("Das Bild darf maximal 3 MB groß sein.");
+            }
+
+            uploadedPath =
+                crypto.randomUUID() + "." + extensions[file.type];
+
+            const { error: uploadError } = await db.storage
+                .from(IMAGE_BUCKET)
+                .upload(uploadedPath, file, {
+                    contentType: file.type,
+                    upsert: false
+                });
+
+            if (uploadError) throw uploadError;
+        }
+
+        const { error: insertError } = await db
+            .from(ARTICLE_TABLE)
+            .insert({
+                title: title,
+                author_name: author || null,
+                content: content,
+                image_path: uploadedPath,
+                status: "pending"
+            });
+
+        if (insertError) throw insertError;
+
+        articleForm.reset();
+
+        showMessage(
+            formMessage,
+            "Vielen Dank! Dein Beitrag wurde eingereicht und wartet auf die Freigabe durch die Redaktion.",
+            "success"
+        );
+
+    } catch (error) {
+        console.error("Einreichungsfehler:", error);
+
+        if (uploadedPath) {
+            await db.storage
+                .from(IMAGE_BUCKET)
+                .remove([uploadedPath]);
+        }
+
+        showMessage(
+            formMessage,
+            "Fehler beim Einreichen: " + error.message,
+            "error"
+        );
+
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Beitrag einreichen";
+    }
+});
+
+
+/* =====================================
+   ÖFFENTLICHE BEITRÄGE LADEN
+===================================== */
+
+async function loadPublicItems() {
+    const container = document.getElementById("publicItems");
+
+    container.replaceChildren(
+        element("div", "empty", "Beiträge werden geladen ...")
+    );
+
+    try {
+        const { data, error } = await db
+            .from(ARTICLE_TABLE)
+            .select("id,title,author_name,content,image_path,created_at,expires_at")
+            .eq("status", "approved")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        container.replaceChildren();
+
+        if (!data || data.length === 0) {
+            container.appendChild(
+                element("div", "empty", "Aktuell gibt es noch keine veröffentlichten Beiträge.")
+            );
+            return;
+        }
+
+        for (const article of data) {
+            const card = element("article", "item");
+            const content = element("div", "item-content");
+
+            if (article.image_path) {
+                const img = element("img");
+                img.src = safeImageUrl(article.image_path);
+                img.alt = "Titelbild: " + article.title;
+                img.loading = "lazy";
+                card.appendChild(img);
+            }
+
+            content.append(
+                element("h3", "", article.title),
+                element("p", "", article.content)
+            );
+
+            const author = article.author_name
+                ? "Von " + article.author_name
+                : "Schülerzeitung";
+
+            content.appendChild(
+                element("p", "item-date", author)
+            );
+
+            content.appendChild(
+                element("p", "item-date",
+                    "Veröffentlicht: " + formatDateTime(article.created_at)
+                )
+            );
+
+            card.appendChild(content);
+            container.appendChild(card);
+        }
+
+    } catch (error) {
+        console.error("Fehler beim Laden:", error);
+
+        container.replaceChildren(
+            element("div", "empty", "Beiträge konnten nicht geladen werden.")
+        );
+    }
+}
+
+
+/* =====================================
+   REDAKTION: ANMELDUNG
+===================================== */
+
+const loginPanel = document.getElementById("loginPanel");
+const adminPanel = document.getElementById("adminPanel");
+const loginMessage = document.getElementById("loginMessage");
+
+function showLogin() {
+    loginPanel.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
+}
+
+function showAdmin() {
+    loginPanel.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+}
+
+async function checkAdmin() {
+    if (location.hash.toLowerCase() !== "#admin") return;
+
+    const { data, error } = await db.auth.getUser();
+
+    if (error || !data.user) {
+        showLogin();
+        return;
+    }
+
+    const { data: editor, error: editorError } = await db
+        .from("message_admins")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+    if (editorError || !editor) {
+        await db.auth.signOut();
+
+        showLogin();
+
+        showMessage(
+            loginMessage,
+            "Dieses Konto besitzt keine Redaktionsberechtigung.",
+            "error"
+        );
+
+        return;
+    }
+
+    showAdmin();
+
+    document.getElementById("adminInfo").textContent =
+        "Angemeldet als " + data.user.email;
+
+    await loadAdminItems();
+}
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    async (event) => {
+        event.preventDefault();
+
+        const button = document.getElementById("loginButton");
+
+        button.disabled = true;
+        button.textContent = "Anmeldung läuft ...";
+
+        try {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            const { error } = await db.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) throw error;
+
+            await checkAdmin();
+
+        } catch (error) {
+            showMessage(
+                loginMessage,
+                "Anmeldung fehlgeschlagen: " + error.message,
+                "error"
+            );
+
+        } finally {
+            button.disabled = false;
+            button.textContent = "Anmelden";
+        }
+    }
+);
+
+
+/* =====================================
+   REDAKTION: BEITRÄGE LADEN
+===================================== */
+
+const adminItems = document.getElementById("adminItems");
+
+let currentItems = [];
+let currentFilter = "pending";
+let adminLoading = false;
+
+async function loadAdminItems() {
+    if (adminLoading) return;
+
+    adminLoading = true;
+
+    adminItems.replaceChildren(
+        element("div", "empty", "Beiträge werden geladen ...")
+    );
+
+    try {
+        const { data, error } = await db
+            .from(ARTICLE_TABLE)
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        currentItems = data || [];
+
+        await renderAdminItems();
+
+    } catch (error) {
+        console.error(error);
+
+        adminItems.replaceChildren(
+            element("div", "empty", "Fehler beim Laden: " + error.message)
+        );
+
+    } finally {
+        adminLoading = false;
+    }
+}
+
+
+/* =====================================
+   REDAKTION: BEITRÄGE ANZEIGEN
+===================================== */
+
+async function renderAdminItems() {
+    adminItems.replaceChildren();
+
+    const filtered = currentFilter === "all"
+        ? currentItems
+        : currentItems.filter(item => item.status === currentFilter);
+
+    if (filtered.length === 0) {
+        adminItems.appendChild(
+            element("div", "empty", "Hier gibt es aktuell keine Beiträge.")
+        );
+        return;
+    }
+
+    for (const article of filtered) {
+        const card = element("article", "admin-item");
+        const content = element("div");
+
+        if (article.image_path) {
+            const img = element("img");
+            img.src = safeImageUrl(article.image_path);
+            img.alt = "Titelbild: " + article.title;
+            img.loading = "lazy";
+            card.appendChild(img);
+        }
+
+        const statusNames = {
+            pending: "Ausstehend",
+            approved: "Freigegeben",
+            rejected: "Abgelehnt"
+        };
+
+        content.append(
+            element(
+                "span",
+                "status " + article.status,
+                statusNames[article.status] || article.status
+            ),
+            element("h3", "", article.title),
+            element("p", "muted", article.content)
+        );
+
+        if (article.author_name) {
+            content.appendChild(
+                element("p", "muted", "Autor: " + article.author_name)
+            );
+        }
+
+        content.appendChild(
+            element(
+                "p",
+                "muted",
+                "Eingereicht: " + formatDateTime(article.created_at)
+            )
+        );
+
+        if (article.expires_at) {
+            content.appendChild(
+                element(
+                    "p",
+                    "muted",
+                    "Wird gelöscht: " + formatDateTime(article.expires_at)
+                )
+            );
+        }
+
+        const actions = element("div", "actions");
+
+        if (article.status !== "approved") {
+            const approve = element("button", "approve", "Freigeben");
+
+            approve.addEventListener("click", () =>
+                changeStatus(article, "approved")
+            );
+
+            actions.appendChild(approve);
+        }
+
+        if (article.status !== "rejected") {
+            const reject = element("button", "reject", "Ablehnen");
+
+            reject.addEventListener("click", () =>
+                changeStatus(article, "rejected")
+            );
+
+            actions.appendChild(reject);
+        }
+
+        const remove = element("button", "delete", "Löschen");
+
+        remove.addEventListener("click", () =>
+            deleteArticle(article)
+        );
+
+        actions.appendChild(remove);
+        content.appendChild(actions);
+
+        card.appendChild(content);
+        adminItems.appendChild(card);
+    }
+}
+
+
+/* =====================================
+   REDAKTION: STATUS ÄNDERN
+===================================== */
+
+async function changeStatus(article, newStatus) {
+    const action = newStatus === "approved"
+        ? "freigeben"
+        : "ablehnen";
+
+    if (!confirm("Möchtest du diesen Beitrag wirklich " + action + "?")) {
+        return;
+    }
+
+    try {
+        const { error } = await db
+            .from(ARTICLE_TABLE)
+            .update({ status: newStatus })
+            .eq("id", article.id);
+
+        if (error) throw error;
+
+        await loadAdminItems();
+
+    } catch (error) {
+        alert("Fehler beim Ändern: " + error.message);
+    }
+}
+
+
+/* =====================================
+   REDAKTION: BEITRAG LÖSCHEN
+===================================== */
+
+async function deleteArticle(article) {
+    if (!confirm(
+        "Möchtest du diesen Beitrag und sein Bild endgültig löschen?"
+    )) {
+        return;
+    }
+
+    try {
+        if (article.image_path) {
+            const { error: imageError } = await db.storage
+                .from(IMAGE_BUCKET)
+                .remove([article.image_path]);
+
+            if (imageError) throw imageError;
+        }
+
+        const { error } = await db
+            .from(ARTICLE_TABLE)
+            .delete()
+            .eq("id", article.id);
+
+        if (error) throw error;
+
+        await loadAdminItems();
+
+    } catch (error) {
+        alert("Fehler beim Löschen: " + error.message);
+    }
+}
+
+
+/* =====================================
+   FILTER UND VERWALTUNG
+===================================== */
+
+document.querySelectorAll("[data-filter]").forEach(button => {
+    button.addEventListener("click", () => {
+        currentFilter = button.dataset.filter;
+
+        document.querySelectorAll("[data-filter]").forEach(tab => {
+            tab.classList.toggle("active", tab === button);
+        });
+
+        renderAdminItems();
+    });
+});
+
+document.getElementById("refreshButton").addEventListener(
+    "click",
+    loadAdminItems
+);
+
+document.getElementById("logoutButton").addEventListener(
+    "click",
+    async () => {
+        await db.auth.signOut();
+
+        currentItems = [];
+        showLogin();
+    }
+);
+
+
+/* =====================================
+   SITZUNG UND START
+===================================== */
+
+db.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+        currentItems = [];
+
+        if (location.hash.toLowerCase() === "#admin") {
+            showLogin();
+        }
+    }
+});
+
+updateView();
+
+</script>
+
+<script src="/assets/navigation.js"></script>
+
+</body>
+</html>
