@@ -865,7 +865,7 @@ async function checkAdmin() {
     }
 
     const { data: editor, error: editorError } = await db
-        .from("message_admins")
+        .from("schulnews_editors")
         .select("user_id")
         .eq("user_id", data.user.id)
         .maybeSingle();
