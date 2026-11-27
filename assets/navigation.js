@@ -153,7 +153,7 @@
       </div>
       <div class="fkg-sidebar-contact">
         Bei Kontaktanfragen wende dich an:<br>
-        <a href="mailto:kontakt@fkgstudents.dpdns.org">kontakt@fkgstudents.dpdns.org</a>
+        <a href="mailto:owner@fkgstudents.dpdns.org">owner@fkgstudents.dpdns.org</a>
       </div>`;
 
     sidebar.innerHTML = html;
