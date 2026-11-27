@@ -393,76 +393,16 @@ footer {
             <p>
                 Was passiert an unserer Schule?
                 Hier findest du Neuigkeiten, Berichte und Geschichten
-                aus dem Schulleben – geschrieben von Schülerinnen und Schülern.
+                aus dem Schulleben – geschrieben von der Redaktion.
             </p>
-        </section>
-
-        <section class="section">
-            <h2>Beitrag einreichen</h2>
-
-            <p class="description">
-                Du möchtest etwas veröffentlichen?
-                Reiche deinen Beitrag ein. Die Redaktion prüft ihn,
-                bevor er für alle sichtbar wird.
-            </p>
-
-            <form id="articleForm">
-
-                <label for="title">Überschrift</label>
-                <input
-                    id="title"
-                    type="text"
-                    maxlength="150"
-                    placeholder="Titel deines Beitrags"
-                    required
-                >
-
-                <label for="author">Name oder Kürzel (optional)</label>
-                <input
-                    id="author"
-                    type="text"
-                    maxlength="80"
-                    placeholder="Wie soll dein Beitrag gekennzeichnet werden?"
-                >
-
-                <label for="content">Dein Beitrag</label>
-                <textarea
-                    id="content"
-                    maxlength="15000"
-                    placeholder="Schreibe hier deinen Artikel ..."
-                    required
-                ></textarea>
-
-                <label for="photo">Titelbild (optional)</label>
-                <input
-                    id="photo"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                >
-
-                <p class="description">
-                    Erlaubte Formate: JPG, PNG und WebP.
-                    Maximale Dateigröße: 3 MB.
-                </p>
-
-                <button
-                    class="primary full"
-                    id="submitButton"
-                    type="submit"
-                >
-                    Beitrag einreichen
-                </button>
-
-                <div id="formMessage" class="message" role="status"></div>
-
-            </form>
         </section>
 
         <section class="section">
             <h2>Aktuelle Beiträge</h2>
 
             <p class="description">
-                Hier erscheinen alle von der Redaktion freigegebenen Beiträge.
+                Hier erscheinen alle veröffentlichten Beiträge
+                unserer Schülerzeitung.
             </p>
 
             <div id="publicItems" class="items">
@@ -481,8 +421,8 @@ footer {
             <h1>Redaktion</h1>
             <p>
                 Interner Bereich der Schülerzeitung.
-                Hier kannst du eingereichte Beiträge prüfen,
-                freigeben oder ablehnen.
+                Hier kannst du neue Beiträge erstellen
+                und bereits veröffentlichte Beiträge verwalten.
             </p>
         </section>
 
@@ -543,6 +483,73 @@ footer {
                     </button>
                 </div>
             </section>
+
+
+            <!-- NEUEN BEITRAG ERSTELLEN -->
+
+            <section class="section">
+                <h2>Neuen Beitrag erstellen</h2>
+
+                <p class="description">
+                    Hier kannst du einen neuen Artikel für die
+                    Schülerzeitung verfassen. Nach dem Speichern
+                    wird er direkt veröffentlicht.
+                </p>
+
+                <form id="articleForm">
+
+                    <label for="title">Überschrift</label>
+                    <input
+                        id="title"
+                        type="text"
+                        maxlength="150"
+                        placeholder="Titel deines Beitrags"
+                        required
+                    >
+
+                    <label for="author">Name oder Kürzel (optional)</label>
+                    <input
+                        id="author"
+                        type="text"
+                        maxlength="80"
+                        placeholder="Wie soll dein Beitrag gekennzeichnet werden?"
+                    >
+
+                    <label for="content">Dein Beitrag</label>
+                    <textarea
+                        id="content"
+                        maxlength="15000"
+                        placeholder="Schreibe hier deinen Artikel ..."
+                        required
+                    ></textarea>
+
+                    <label for="photo">Titelbild (optional)</label>
+                    <input
+                        id="photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                    >
+
+                    <p class="description">
+                        Erlaubte Formate: JPG, PNG und WebP.
+                        Maximale Dateigröße: 3 MB.
+                    </p>
+
+                    <button
+                        class="primary full"
+                        id="submitButton"
+                        type="submit"
+                    >
+                        Beitrag veröffentlichen
+                    </button>
+
+                    <div id="formMessage" class="message" role="status"></div>
+
+                </form>
+            </section>
+
+
+            <!-- BEITRÄGE VERWALTEN -->
 
             <section class="section">
                 <h2>Beiträge verwalten</h2>
@@ -662,7 +669,7 @@ window.addEventListener("hashchange", updateView);
 
 
 /* =====================================
-   BEITRAG EINREICHEN
+   REDAKTION: NEUEN BEITRAG ERSTELLEN
 ===================================== */
 
 const articleForm = document.getElementById("articleForm");
@@ -673,12 +680,19 @@ articleForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     submitButton.disabled = true;
-    submitButton.textContent = "Wird eingereicht ...";
+    submitButton.textContent = "Wird veröffentlicht ...";
     formMessage.className = "message";
 
     let uploadedPath = null;
 
     try {
+        const { data: userData, error: userError } =
+            await db.auth.getUser();
+
+        if (userError || !userData.user) {
+            throw new Error("Du bist nicht angemeldet.");
+        }
+
         const title = document.getElementById("title").value.trim();
         const author = document.getElementById("author").value.trim();
         const content = document.getElementById("content").value.trim();
@@ -727,7 +741,7 @@ articleForm.addEventListener("submit", async (event) => {
                 author_name: author || null,
                 content: content,
                 image_path: uploadedPath,
-                status: "pending"
+                status: "approved"
             });
 
         if (insertError) throw insertError;
@@ -736,28 +750,41 @@ articleForm.addEventListener("submit", async (event) => {
 
         showMessage(
             formMessage,
-            "Vielen Dank! Dein Beitrag wurde eingereicht und wartet auf die Freigabe durch die Redaktion.",
+            "Dein Beitrag wurde erfolgreich veröffentlicht!",
             "success"
         );
 
+        currentFilter = "approved";
+
+        document.querySelectorAll("[data-filter]").forEach(tab => {
+            tab.classList.toggle("active", tab.dataset.filter === "approved");
+        });
+
+        await loadAdminItems();
+        await loadPublicItems();
+
     } catch (error) {
-        console.error("Einreichungsfehler:", error);
+        console.error("Veröffentlichungsfehler:", error);
 
         if (uploadedPath) {
-            await db.storage
+            const { error: cleanupError } = await db.storage
                 .from(IMAGE_BUCKET)
                 .remove([uploadedPath]);
+
+            if (cleanupError) {
+                console.error("Bild konnte nicht entfernt werden:", cleanupError);
+            }
         }
 
         showMessage(
             formMessage,
-            "Fehler beim Einreichen: " + error.message,
+            "Fehler beim Veröffentlichen: " + error.message,
             "error"
         );
 
     } finally {
         submitButton.disabled = false;
-        submitButton.textContent = "Beitrag einreichen";
+        submitButton.textContent = "Beitrag veröffentlichen";
     }
 });
 
@@ -1030,7 +1057,7 @@ async function renderAdminItems() {
             element(
                 "p",
                 "muted",
-                "Eingereicht: " + formatDateTime(article.created_at)
+                "Erstellt: " + formatDateTime(article.created_at)
             )
         );
 
@@ -1103,6 +1130,7 @@ async function changeStatus(article, newStatus) {
         if (error) throw error;
 
         await loadAdminItems();
+        await loadPublicItems();
 
     } catch (error) {
         alert("Fehler beim Ändern: " + error.message);
@@ -1122,14 +1150,6 @@ async function deleteArticle(article) {
     }
 
     try {
-        if (article.image_path) {
-            const { error: imageError } = await db.storage
-                .from(IMAGE_BUCKET)
-                .remove([article.image_path]);
-
-            if (imageError) throw imageError;
-        }
-
         const { error } = await db
             .from(ARTICLE_TABLE)
             .delete()
@@ -1138,6 +1158,7 @@ async function deleteArticle(article) {
         if (error) throw error;
 
         await loadAdminItems();
+        await loadPublicItems();
 
     } catch (error) {
         alert("Fehler beim Löschen: " + error.message);
@@ -1163,7 +1184,10 @@ document.querySelectorAll("[data-filter]").forEach(button => {
 
 document.getElementById("refreshButton").addEventListener(
     "click",
-    loadAdminItems
+    async () => {
+        await loadAdminItems();
+        await loadPublicItems();
+    }
 );
 
 document.getElementById("logoutButton").addEventListener(
