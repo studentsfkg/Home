@@ -4,862 +4,1222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1020">
-<meta name="description" content="FKG Students – digitale Projekte, Informationen und Angebote für die Schulgemeinschaft des Friedrich-Koenig-Gymnasiums Würzburg.">
+<meta name="theme-color" content="#10131c">
 
-<title>FKG Students – Die digitale Schülerplattform</title>
+<title>Schülerzeitung – FKG Students</title>
+<meta name="description" content="Die digitale Schülerzeitung des Friedrich-Koenig-Gymnasiums Würzburg.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  color-scheme: dark;
-  --bg: #0b1020;
-  --surface: #111a2d;
-  --surface-2: #17233a;
-  --surface-3: #1d2b45;
-  --text: #f5f7ff;
-  --muted: #a4b0c7;
-  --blue: #79a7ff;
-  --blue-strong: #4f83f1;
-  --line: rgba(190,207,240,.13);
-  --max: 1160px;
+    color-scheme: dark;
+    --bg: #10131c;
+    --panel: #191e2b;
+    --panel2: #222938;
+    --text: #f4f5f8;
+    --muted: #a6adbd;
+    --accent: #7c9cff;
+    --border: #30394b;
+    --green: #65d6a0;
+    --red: #ff8585;
+    --yellow: #f5ca75;
 }
 
 * {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at 82% 0%, rgba(65,112,218,.19), transparent 34rem),
-    radial-gradient(ellipse at 0% 40%, rgba(38,76,151,.12), transparent 32rem),
-    var(--bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-a {
-  color: inherit;
-}
-
-button, a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* HEADER */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  border-bottom: 1px solid var(--line);
-  background: rgba(11,16,32,.82);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+header {
+    padding: 22px 20px;
+    background: #141925;
+    border-bottom: 1px solid var(--border);
 }
 
 .header-inner {
-  width: min(var(--max), 100%);
-  min-height: 76px;
-  margin: auto;
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  gap: 17px;
-}
-
-.menu-button {
-  width: 43px;
-  height: 43px;
-  flex: 0 0 43px;
-  display: grid;
-  place-content: center;
-  gap: 5px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: rgba(255,255,255,.045);
-  cursor: pointer;
-  transition: background .2s, border-color .2s, transform .2s;
-}
-
-.menu-button:hover {
-  background: var(--surface-3);
-  border-color: rgba(121,167,255,.5);
-  transform: translateY(-1px);
-}
-
-.menu-button span {
-  width: 18px;
-  height: 2px;
-  display: block;
-  border-radius: 2px;
-  background: #fff;
+    max-width: 1050px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 
 .brand {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 19px;
-  font-weight: 850;
-  letter-spacing: -.7px;
+    font-weight: 800;
+    font-size: 20px;
 }
 
 .brand span {
-  color: var(--blue);
+    color: var(--accent);
 }
 
-.header-tag {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 13px;
+.menu-button {
+    order: -1;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 19px;
+    cursor: pointer;
 }
-
-/* HERO */
 
 main {
-  overflow: hidden;
-}
-
-.container {
-  width: min(var(--max), 100%);
-  margin: auto;
-  padding-left: 28px;
-  padding-right: 28px;
+    max-width: 1050px;
+    margin: 35px auto;
+    padding: 0 18px;
 }
 
 .hero {
-  padding-top: 82px;
-  padding-bottom: 68px;
+    padding: 35px 25px;
+    background: linear-gradient(135deg, #202c47, #191e2b);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 28px;
 }
 
-.hero-panel {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  min-height: 390px;
-  display: grid;
-  grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr);
-  align-items: center;
-  gap: 35px;
-  padding: clamp(32px,6vw,68px);
-  border: 1px solid rgba(148,181,255,.2);
-  border-radius: 30px;
-  background:
-    linear-gradient(115deg, rgba(24,43,76,.97),
-    rgba(15,25,45,.96) 62%, rgba(21,37,67,.95));
-  box-shadow: 0 28px 90px rgba(0,0,0,.22);
+.hero h1 {
+    font-size: clamp(30px, 6vw, 43px);
+    margin: 0 0 12px;
 }
 
-.hero-panel::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  width: 430px;
-  height: 430px;
-  right: -120px;
-  top: -190px;
-  border-radius: 50%;
-  border: 1px solid rgba(151,185,255,.15);
-  box-shadow:
-    0 0 0 45px rgba(151,185,255,.025),
-    0 0 0 95px rgba(151,185,255,.02);
+.hero p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 0;
+    max-width: 650px;
 }
 
-.hero-copy {
-  max-width: 690px;
+.section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 24px;
+    margin-bottom: 25px;
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 23px;
-  color: #a9c5ff;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.7px;
-  text-transform: uppercase;
+h2 {
+    margin-top: 0;
+    font-size: 23px;
 }
 
-.eyebrow::before {
-  content: "";
-  width: 22px;
-  height: 2px;
-  border-radius: 3px;
-  background: var(--blue);
+.description, .muted {
+    color: var(--muted);
+    line-height: 1.6;
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(43px,6.7vw,76px);
-  line-height: 1.04;
-  letter-spacing: -3.8px;
-  font-weight: 850;
+label {
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: 600;
 }
 
-h1 span {
-  display: block;
-  color: #8db4ff;
+input, textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel2);
+    color: white;
+    font-size: 16px;
+    font-family: inherit;
 }
 
-.hero-copy p {
-  max-width: 570px;
-  margin: 24px 0 0;
-  color: #bac6dc;
-  font-size: 16px;
-  line-height: 1.85;
+textarea {
+    min-height: 150px;
+    resize: vertical;
 }
 
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 31px;
+input:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
 }
 
-.button-primary,
-.button-secondary {
-  min-height: 47px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 19px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 750;
-  text-decoration: none;
-  transition: transform .2s, background .2s, border-color .2s;
-}
-
-.button-primary {
-  color: white;
-  background: var(--blue-strong);
-  box-shadow: 0 8px 25px rgba(79,131,241,.22);
-}
-
-.button-primary:hover {
-  background: #6898ff;
-  transform: translateY(-2px);
-}
-
-.button-secondary {
-  color: #e5edff;
-  border: 1px solid rgba(196,214,255,.2);
-  background: rgba(255,255,255,.045);
-}
-
-.button-secondary:hover {
-  background: rgba(255,255,255,.09);
-  transform: translateY(-2px);
-}
-
-/* SCHNELLZUGRIFF */
-
-.hero-aside {
-  position: relative;
-  padding: 23px;
-  border: 1px solid rgba(192,211,255,.16);
-  border-radius: 20px;
-  background: rgba(7,14,29,.28);
-  backdrop-filter: blur(8px);
-}
-
-.aside-kicker {
-  color: #91b5ff;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-.hero-aside h2 {
-  margin: 8px 0 17px;
-  font-size: 20px;
-  letter-spacing: -.5px;
-}
-
-.quick-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 0;
-  color: #e9efff;
-  text-decoration: none;
-  border-top: 1px solid rgba(255,255,255,.09);
-  font-size: 13px;
-  font-weight: 650;
-  transition: color .2s;
-}
-
-.quick-link:hover {
-  color: #9dbdff;
-}
-
-.quick-icon {
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  flex: 0 0 32px;
-  border-radius: 10px;
-  background: rgba(121,167,255,.13);
-  font-size: 16px;
-}
-
-.quick-arrow {
-  margin-left: auto;
-  color: #91b5ff;
-  font-size: 18px;
-}
-
-/* PROJEKTE */
-
-.projects {
-  padding-top: 22px;
-  padding-bottom: 100px;
-}
-
-.section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 27px;
-}
-
-.section-kicker {
-  color: var(--blue);
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-}
-
-.section-head h2 {
-  margin: 5px 0 0;
-  font-size: clamp(27px,4vw,35px);
-  line-height: 1.2;
-  letter-spacing: -1.1px;
-}
-
-.section-head p {
-  max-width: 430px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 16px;
-}
-
-.project-card {
-  min-height: 246px;
-  display: flex;
-  flex-direction: column;
-  padding: 23px;
-  border: 1px solid var(--line);
-  border-radius: 19px;
-  background: linear-gradient(155deg,rgba(24,35,57,.95),rgba(16,25,42,.95));
-  color: var(--text);
-  text-decoration: none;
-  transition: transform .22s, border-color .22s,
-    background .22s, box-shadow .22s;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(121,167,255,.48);
-  background: linear-gradient(155deg,#1d2d4b,#14223a);
-  box-shadow: 0 18px 38px rgba(0,0,0,.18);
-}
-
-.project-icon {
-  width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 24px;
-  border: 1px solid rgba(121,167,255,.15);
-  border-radius: 14px;
-  background: rgba(121,167,255,.12);
-  font-size: 21px;
-}
-
-.project-card h3 {
-  margin: 0 0 8px;
-  font-size: 17px;
-  letter-spacing: -.25px;
-}
-
-.project-card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.75;
-}
-
-.card-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: auto;
-  padding-top: 22px;
-  color: #9dbbff;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.card-bottom span:last-child {
-  font-size: 19px;
-  transition: transform .2s;
-}
-
-.project-card:hover .card-bottom span:last-child {
-  transform: translateX(4px);
-}
-
-/* FOOTER */
-
-.footer {
-  border-top: 1px solid var(--line);
-  background: rgba(8,13,26,.42);
-}
-
-.footer-inner {
-  min-height: 82px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.footer-brand {
-  color: #dce6fa;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.footer-brand span {
-  color: var(--blue);
-}
-
-.footer-note,
-.footer-inner a {
-  color: var(--muted);
-  font-size: 11px;
-  text-decoration: none;
-}
-
-.footer-inner a:hover {
-  color: white;
-}
-
-:focus-visible {
-  outline: 2px solid #91b5ff;
-  outline-offset: 4px;
-}
-
-/* TABLET */
-
-@media (max-width: 900px) {
-  .hero-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-aside {
-    max-width: 520px;
-  }
-
-  .project-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-
-  .section-head {
-    align-items: start;
-    flex-direction: column;
-  }
-}
-
-/* SMARTPHONE */
-
-@media (max-width: 600px) {
-  .header-inner {
-    min-height: 66px;
-    padding: 0 17px;
-    gap: 12px;
-  }
-
-  .brand {
-    font-size: 17px;
-  }
-
-  .header-tag {
-    font-size: 11px;
-  }
-
-  .container {
-    padding-left: 17px;
-    padding-right: 17px;
-  }
-
-  .hero {
-    padding-top: 34px;
-    padding-bottom: 48px;
-  }
-
-  .hero-panel {
-    min-height: 0;
-    gap: 28px;
-    padding: 29px 23px;
-    border-radius: 23px;
-  }
-
-  h1 {
-    font-size: clamp(42px,12vw,59px);
-    letter-spacing: -2.7px;
-  }
-
-  .hero-copy p {
-    margin-top: 18px;
+input[type="file"] {
     font-size: 14px;
-  }
-
-  .hero-actions {
-    margin-top: 24px;
-  }
-
-  .button-primary,
-  .button-secondary {
-    flex: 1 1 100%;
-  }
-
-  .hero-aside {
-    padding: 19px;
-  }
-
-  .projects {
-    padding-bottom: 65px;
-  }
-
-  .project-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .project-card {
-    min-height: 205px;
-    padding: 21px;
-  }
-
-  .project-icon {
-    margin-bottom: 17px;
-  }
-
-  .footer-inner {
-    padding-top: 19px;
-    padding-bottom: 19px;
-  }
 }
 
-/* REDUZIERTE ANIMATIONEN */
+button {
+    font: inherit;
+    cursor: pointer;
+}
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-    animation-duration: .01ms !important;
-  }
+.primary, .secondary, .approve, .reject, .delete {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 15px;
+    font-weight: 700;
+}
+
+.primary {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: white;
+    border: 1px solid var(--border);
+}
+
+.approve {
+    background: #174432;
+    color: var(--green);
+}
+
+.reject {
+    background: #49391b;
+    color: var(--yellow);
+}
+
+.delete {
+    background: #472323;
+    color: var(--red);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.message {
+    display: none;
+    padding: 13px;
+    margin-top: 16px;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.message.success {
+    display: block;
+    background: #15372c;
+    color: var(--green);
+}
+
+.message.error {
+    display: block;
+    background: #402323;
+    color: var(--red);
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 17px;
+}
+
+.item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+    background: #141925;
+}
+
+.item-content {
+    padding: 16px;
+}
+
+.item h3 {
+    margin: 0 0 9px;
+    overflow-wrap: anywhere;
+}
+
+.item p {
+    color: var(--muted);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.item-date {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 30px 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 15px;
+    font-size: 13px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 18px 0;
+}
+
+.tab {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 9px;
+    padding: 10px 13px;
+}
+
+.tab.active {
+    background: var(--accent);
+    color: #10131c;
+}
+
+.admin-item {
+    display: grid;
+    grid-template-columns: minmax(160px, 230px) 1fr;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-item img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 11px;
+    background: var(--panel2);
+}
+
+.admin-item h3 {
+    margin: 0 0 10px;
+}
+
+.admin-item p {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--panel2);
+    margin-bottom: 10px;
+}
+
+.status.pending {
+    color: var(--yellow);
+}
+
+.status.approved {
+    color: var(--green);
+}
+
+.status.rejected {
+    color: var(--red);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+@media(max-width:650px) {
+    main {
+        margin-top: 20px;
+    }
+
+    .section {
+        padding: 18px;
+    }
+
+    .admin-item {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-item img {
+        height: 220px;
+    }
 }
 </style>
 </head>
 
-<body id="top">
+<body>
 
-<header class="site-header">
-  <div class="header-inner">
-
-    <button class="menu-button"
-            id="menuButton"
-            type="button"
-            aria-label="Menü öffnen"
-            aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <a href="/" class="brand">
-      FKG<span>.</span>STUDENTS
-    </a>
-
-    <div class="header-tag">
-      Friedrich-Koenig-Gymnasium
+<header>
+    <div class="header-inner">
+        <div class="brand">FKG <span>Students</span></div>
+        <button class="menu-button" id="menuButton" aria-label="Menü öffnen">☰</button>
     </div>
-
-  </div>
 </header>
 
 <main>
 
-  <!-- BEGRÜSSUNG -->
+    <!-- ÖFFENTLICHER BEREICH -->
 
-  <section class="hero">
-    <div class="container">
+    <div id="publicView">
 
-      <div class="hero-panel">
+        <section class="hero">
+            <h1>Schülerzeitung</h1>
+            <p>
+                Was passiert an unserer Schule?
+                Hier findest du Neuigkeiten, Berichte und Geschichten
+                aus dem Schulleben – geschrieben von der Redaktion.
+            </p>
+        </section>
 
-        <div class="hero-copy">
+        <section class="section">
+            <h2>Aktuelle Beiträge</h2>
 
-          <div class="eyebrow">
-            Die digitale Schülerplattform
-          </div>
+            <p class="description">
+                Hier erscheinen alle veröffentlichten Beiträge
+                unserer Schülerzeitung.
+            </p>
 
-          <h1>
-            Deine Schule.
-            <span>Deine Plattform.</span>
-          </h1>
-
-          <p>
-            Digitale Projekte, hilfreiche Informationen und
-            Angebote aus dem Schulleben – übersichtlich an
-            einem Ort.
-          </p>
-
-          <div class="hero-actions">
-
-            <a class="button-primary" href="#projekte">
-              Projekte entdecken →
-            </a>
-
-            <a class="button-secondary"
-               href="/Schulleben/Stundenpl%C3%A4ne/">
-              Zum Stundenplan
-            </a>
-
-          </div>
-
-        </div>
-
-        <!-- SCHNELLZUGRIFF -->
-
-        <aside class="hero-aside" aria-label="Direktzugriff">
-
-          <div class="aside-kicker">
-            Schnellzugriff
-          </div>
-
-          <h2>Was suchst du?</h2>
-
-          <a class="quick-link"
-             href="/Schulleben/Stundenpl%C3%A4ne/">
-            <span class="quick-icon">▦</span>
-            Stundenpläne
-            <span class="quick-arrow">›</span>
-          </a>
-
-          <a class="quick-link"
-             href="/Schulleben/Mensa/">
-            <span class="quick-icon">♨</span>
-            Mensaplan
-            <span class="quick-arrow">›</span>
-          </a>
-
-          <a class="quick-link"
-             href="/Schulleben/Fundsachen/">
-            <span class="quick-icon">⌕</span>
-            Fundsachen
-            <span class="quick-arrow">›</span>
-          </a>
-
-        </aside>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJEKTE -->
-
-  <section class="projects container" id="projekte">
-
-    <div class="section-head">
-
-      <div>
-        <div class="section-kicker">Entdecken</div>
-        <h2>Unsere Projekte</h2>
-      </div>
-
-      <p>
-        Finde schnell das passende Angebot und entdecke,
-        was FKG Students für deinen Schulalltag bereithält.
-      </p>
+            <div id="publicItems" class="items">
+                <div class="empty">Beiträge werden geladen ...</div>
+            </div>
+        </section>
 
     </div>
 
-    <div class="project-grid">
 
-      <!-- STREITSCHLICHTER -->
+    <!-- REDAKTIONSBEREICH -->
 
-      <a href="/Streitschlichter/" class="project-card">
+    <div id="adminView" class="hidden">
 
-        <div class="project-icon">⚖</div>
+        <section class="hero">
+            <h1>Redaktion</h1>
+            <p>
+                Interner Bereich der Schülerzeitung.
+                Hier kannst du neue Beiträge erstellen
+                und bereits veröffentlichte Beiträge verwalten.
+            </p>
+        </section>
 
-        <h3>Streitschlichter</h3>
+        <section id="loginPanel" class="section">
+            <h2>Redaktions-Anmeldung</h2>
 
-        <p>
-          Informationen, Aufgaben und Möglichkeiten
-          zur vertraulichen Kontaktaufnahme.
-        </p>
+            <p class="description">
+                Melde dich mit deinem bestehenden Supabase-Konto an.
+            </p>
 
-        <div class="card-bottom">
-          <span>Projekt öffnen</span>
-          <span>→</span>
-        </div>
+            <form id="loginForm">
 
-      </a>
+                <label for="email">E-Mail-Adresse</label>
+                <input
+                    id="email"
+                    type="email"
+                    autocomplete="username"
+                    required
+                >
 
-      <!-- STUNDENPLÄNE -->
+                <label for="password">Passwort</label>
+                <input
+                    id="password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                >
 
-      <a href="/Schulleben/Stundenpl%C3%A4ne/"
-         class="project-card">
+                <button
+                    class="primary full"
+                    id="loginButton"
+                    type="submit"
+                >
+                    Anmelden
+                </button>
 
-        <div class="project-icon">▦</div>
+                <div id="loginMessage" class="message" role="status"></div>
 
-        <h3>Stundenpläne</h3>
+            </form>
+        </section>
 
-        <p>
-          Finde den Stundenplan deiner Klasse und
-          behalte den Schulalltag im Blick.
-        </p>
+        <section id="adminPanel" class="hidden">
 
-        <div class="card-bottom">
-          <span>Stundenplan ansehen</span>
-          <span>→</span>
-        </div>
+            <section class="section">
+                <h2>Verwaltung</h2>
 
-      </a>
+                <p class="description" id="adminInfo">
+                    Du bist angemeldet.
+                </p>
 
-      <!-- MENSAPLAN -->
+                <div class="toolbar">
+                    <button class="secondary" id="refreshButton">
+                        Aktualisieren
+                    </button>
 
-      <a href="/Schulleben/Mensa/" class="project-card">
+                    <button class="secondary" id="logoutButton">
+                        Abmelden
+                    </button>
+                </div>
+            </section>
 
-        <div class="project-icon">♨</div>
 
-        <h3>Mensaplan</h3>
+            <!-- NEUEN BEITRAG ERSTELLEN -->
 
-        <p>
-          Entdecke das wöchentliche Angebot der Mensa
-          und die Gerichte der einzelnen Tage.
-        </p>
+            <section class="section">
+                <h2>Neuen Beitrag erstellen</h2>
 
-        <div class="card-bottom">
-          <span>Menü ansehen</span>
-          <span>→</span>
-        </div>
+                <p class="description">
+                    Hier kannst du einen neuen Artikel für die
+                    Schülerzeitung verfassen. Nach dem Speichern
+                    wird er direkt veröffentlicht.
+                </p>
 
-      </a>
+                <form id="articleForm">
 
-      <!-- FUNDSACHEN -->
+                    <label for="title">Überschrift</label>
+                    <input
+                        id="title"
+                        type="text"
+                        maxlength="150"
+                        placeholder="Titel deines Beitrags"
+                        required
+                    >
 
-      <a href="/Schulleben/Fundsachen/"
-         class="project-card">
+                    <label for="author">Name oder Kürzel (optional)</label>
+                    <input
+                        id="author"
+                        type="text"
+                        maxlength="80"
+                        placeholder="Wie soll dein Beitrag gekennzeichnet werden?"
+                    >
 
-        <div class="project-icon">⌕</div>
+                    <label for="content">Dein Beitrag</label>
+                    <textarea
+                        id="content"
+                        maxlength="15000"
+                        placeholder="Schreibe hier deinen Artikel ..."
+                        required
+                    ></textarea>
 
-        <h3>Fundsachen</h3>
+                    <label for="photo">Titelbild (optional)</label>
+                    <input
+                        id="photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                    >
 
-        <p>
-          Durchsuche veröffentlichte Fundstücke und
-          finde verlorene Gegenstände wieder.
-        </p>
+                    <p class="description">
+                        Erlaubte Formate: JPG, PNG und WebP.
+                        Maximale Dateigröße: 3 MB.
+                    </p>
 
-        <div class="card-bottom">
-          <span>Fundgrube öffnen</span>
-          <span>→</span>
-        </div>
+                    <button
+                        class="primary full"
+                        id="submitButton"
+                        type="submit"
+                    >
+                        Beitrag veröffentlichen
+                    </button>
 
-      </a>
+                    <div id="formMessage" class="message" role="status"></div>
 
-      
-      <!-- SCHÜLERZEITUNG -->
+                </form>
+            </section>
 
-      <a href="/Sch%C3%BClerzeitung/" class="project-card">
 
-        <div class="project-icon">📰</div>
+            <!-- BEITRÄGE VERWALTEN -->
 
-        <h3>Schülerzeitung</h3>
+            <section class="section">
+                <h2>Beiträge verwalten</h2>
 
-        <p>
-          Neuigkeiten, Berichte und Geschichten aus
-          dem Schulleben – geschrieben von Schülern.
-        </p>
+                <div class="toolbar">
+                    <button class="tab active" data-filter="pending">
+                        Ausstehend
+                    </button>
 
-        <div class="card-bottom">
-          <span>Beiträge entdecken</span>
-          <span>→</span>
-        </div>
+                    <button class="tab" data-filter="approved">
+                        Freigegeben
+                    </button>
 
-      </a>
+                    <button class="tab" data-filter="rejected">
+                        Abgelehnt
+                    </button>
+
+                    <button class="tab" data-filter="all">
+                        Alle
+                    </button>
+                </div>
+
+                <div id="adminItems">
+                    <div class="empty">Beiträge werden geladen ...</div>
+                </div>
+            </section>
+
+        </section>
 
     </div>
-  </section>
 
 </main>
 
-<!-- FOOTER -->
-
-<footer class="footer">
-
-  <div class="footer-inner container">
-
-    <div>
-      <div class="footer-brand">
-        FKG<span>.</span>STUDENTS
-      </div>
-      <div class="footer-note">
-        Die digitale Schülerplattform
-      </div>
-    </div>
-
-    <a href="mailto:kontakt@fkgstudents.dpdns.org">
-      Kontakt
-    </a>
-
-    <a href="#top">
-      Zurück nach oben ↑
-    </a>
-
-    <div class="footer-note">
-      © <span id="year"></span> FKG Students
-    </div>
-
-  </div>
-
+<footer>
+    FKG Students · Digitale Schülerplattform ·
+    <a href="#admin" style="color: var(--accent); text-decoration: none;">Redaktion</a>
 </footer>
 
-<!-- ZENTRALE NAVIGATION -->
+<script>
+
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+    "https://rsshyrnohmiotwohspvw.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_olgYybAcmvNySIl_-xyknw_41MZ_XXR";
+
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const ARTICLE_TABLE = "schulnews_articles";
+const IMAGE_BUCKET = "schulnews-images";
+
+
+/* =====================================
+   HILFSFUNKTIONEN
+===================================== */
+
+function element(tag, className, text) {
+    const el = document.createElement(tag);
+
+    if (className) el.className = className;
+    if (text !== undefined) el.textContent = text;
+
+    return el;
+}
+
+function showMessage(target, text, type) {
+    target.textContent = text;
+    target.className = "message " + type;
+}
+
+function formatDateTime(date) {
+    return new Date(date).toLocaleString("de-DE", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
+
+function safeImageUrl(path) {
+    if (!path) return null;
+
+    const { data } = db.storage
+        .from(IMAGE_BUCKET)
+        .getPublicUrl(path);
+
+    return data.publicUrl;
+}
+
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+const publicView = document.getElementById("publicView");
+const adminView = document.getElementById("adminView");
+
+function updateView() {
+    const isAdmin = location.hash.toLowerCase() === "#admin";
+
+    publicView.classList.toggle("hidden", isAdmin);
+    adminView.classList.toggle("hidden", !isAdmin);
+
+    if (isAdmin) {
+        checkAdmin();
+    } else {
+        loadPublicItems();
+    }
+}
+
+window.addEventListener("hashchange", updateView);
+
+
+/* =====================================
+   REDAKTION: NEUEN BEITRAG ERSTELLEN
+===================================== */
+
+const articleForm = document.getElementById("articleForm");
+const formMessage = document.getElementById("formMessage");
+const submitButton = document.getElementById("submitButton");
+
+articleForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Wird veröffentlicht ...";
+    formMessage.className = "message";
+
+    let uploadedPath = null;
+
+    try {
+        const { data: userData, error: userError } =
+            await db.auth.getUser();
+
+        if (userError || !userData.user) {
+            throw new Error("Du bist nicht angemeldet.");
+        }
+
+        const title = document.getElementById("title").value.trim();
+        const author = document.getElementById("author").value.trim();
+        const content = document.getElementById("content").value.trim();
+        const file = document.getElementById("photo").files[0];
+
+        if (!title || !content) {
+            throw new Error("Bitte gib eine Überschrift und einen Beitrag ein.");
+        }
+
+        if (title.length > 150 || content.length > 15000) {
+            throw new Error("Der Beitrag ist zu lang.");
+        }
+
+        if (file) {
+            const extensions = {
+                "image/jpeg": "jpg",
+                "image/png": "png",
+                "image/webp": "webp"
+            };
+
+            if (!extensions[file.type]) {
+                throw new Error("Bitte verwende JPG, PNG oder WebP.");
+            }
+
+            if (file.size > 3 * 1024 * 1024) {
+                throw new Error("Das Bild darf maximal 3 MB groß sein.");
+            }
+
+            uploadedPath =
+                crypto.randomUUID() + "." + extensions[file.type];
+
+            const { error: uploadError } = await db.storage
+                .from(IMAGE_BUCKET)
+                .upload(uploadedPath, file, {
+                    contentType: file.type,
+                    upsert: false
+                });
+
+            if (uploadError) throw uploadError;
+        }
+
+        const { error: insertError } = await db
+            .from(ARTICLE_TABLE)
+            .insert({
+                title: title,
+                author_name: author || null,
+                content: content,
+                image_path: uploadedPath,
+                status: "approved"
+            });
+
+        if (insertError) throw insertError;
+
+        articleForm.reset();
+
+        showMessage(
+            formMessage,
+            "Dein Beitrag wurde erfolgreich veröffentlicht!",
+            "success"
+        );
+
+        currentFilter = "approved";
+
+        document.querySelectorAll("[data-filter]").forEach(tab => {
+            tab.classList.toggle("active", tab.dataset.filter === "approved");
+        });
+
+        await loadAdminItems();
+        await loadPublicItems();
+
+    } catch (error) {
+        console.error("Veröffentlichungsfehler:", error);
+
+        if (uploadedPath) {
+            const { error: cleanupError } = await db.storage
+                .from(IMAGE_BUCKET)
+                .remove([uploadedPath]);
+
+            if (cleanupError) {
+                console.error("Bild konnte nicht entfernt werden:", cleanupError);
+            }
+        }
+
+        showMessage(
+            formMessage,
+            "Fehler beim Veröffentlichen: " + error.message,
+            "error"
+        );
+
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Beitrag veröffentlichen";
+    }
+});
+
+
+/* =====================================
+   ÖFFENTLICHE BEITRÄGE LADEN
+===================================== */
+
+async function loadPublicItems() {
+    const container = document.getElementById("publicItems");
+
+    container.replaceChildren(
+        element("div", "empty", "Beiträge werden geladen ...")
+    );
+
+    try {
+        const { data, error } = await db
+            .from(ARTICLE_TABLE)
+            .select("id,title,author_name,content,image_path,created_at,expires_at")
+            .eq("status", "approved")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        container.replaceChildren();
+
+        if (!data || data.length === 0) {
+            container.appendChild(
+                element("div", "empty", "Aktuell gibt es noch keine veröffentlichten Beiträge.")
+            );
+            return;
+        }
+
+        for (const article of data) {
+            const card = element("article", "item");
+            const content = element("div", "item-content");
+
+            if (article.image_path) {
+                const img = element("img");
+                img.src = safeImageUrl(article.image_path);
+                img.alt = "Titelbild: " + article.title;
+                img.loading = "lazy";
+                card.appendChild(img);
+            }
+
+            content.append(
+                element("h3", "", article.title),
+                element("p", "", article.content)
+            );
+
+            const author = article.author_name
+                ? "Von " + article.author_name
+                : "Schülerzeitung";
+
+            content.appendChild(
+                element("p", "item-date", author)
+            );
+
+            content.appendChild(
+                element("p", "item-date",
+                    "Veröffentlicht: " + formatDateTime(article.created_at)
+                )
+            );
+
+            card.appendChild(content);
+            container.appendChild(card);
+        }
+
+    } catch (error) {
+        console.error("Fehler beim Laden:", error);
+
+        container.replaceChildren(
+            element("div", "empty", "Beiträge konnten nicht geladen werden.")
+        );
+    }
+}
+
+
+/* =====================================
+   REDAKTION: ANMELDUNG
+===================================== */
+
+const loginPanel = document.getElementById("loginPanel");
+const adminPanel = document.getElementById("adminPanel");
+const loginMessage = document.getElementById("loginMessage");
+
+function showLogin() {
+    loginPanel.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
+}
+
+function showAdmin() {
+    loginPanel.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+}
+
+async function checkAdmin() {
+    if (location.hash.toLowerCase() !== "#admin") return;
+
+    const { data, error } = await db.auth.getUser();
+
+    if (error || !data.user) {
+        showLogin();
+        return;
+    }
+
+    const { data: editor, error: editorError } = await db
+        .from("schulnews_editors")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+    if (editorError || !editor) {
+        await db.auth.signOut();
+
+        showLogin();
+
+        showMessage(
+            loginMessage,
+            "Dieses Konto besitzt keine Redaktionsberechtigung.",
+            "error"
+        );
+
+        return;
+    }
+
+    showAdmin();
+
+    document.getElementById("adminInfo").textContent =
+        "Angemeldet als " + data.user.email;
+
+    await loadAdminItems();
+}
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    async (event) => {
+        event.preventDefault();
+
+        const button = document.getElementById("loginButton");
+
+        button.disabled = true;
+        button.textContent = "Anmeldung läuft ...";
+
+        try {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            const { error } = await db.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) throw error;
+
+            await checkAdmin();
+
+        } catch (error) {
+            showMessage(
+                loginMessage,
+                "Anmeldung fehlgeschlagen: " + error.message,
+                "error"
+            );
+
+        } finally {
+            button.disabled = false;
+            button.textContent = "Anmelden";
+        }
+    }
+);
+
+
+/* =====================================
+   REDAKTION: BEITRÄGE LADEN
+===================================== */
+
+const adminItems = document.getElementById("adminItems");
+
+let currentItems = [];
+let currentFilter = "pending";
+let adminLoading = false;
+
+async function loadAdminItems() {
+    if (adminLoading) return;
+
+    adminLoading = true;
+
+    adminItems.replaceChildren(
+        element("div", "empty", "Beiträge werden geladen ...")
+    );
+
+    try {
+        const { data, error } = await db
+            .from(ARTICLE_TABLE)
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        currentItems = data || [];
+
+        await renderAdminItems();
+
+    } catch (error) {
+        console.error(error);
+
+        adminItems.replaceChildren(
+            element("div", "empty", "Fehler beim Laden: " + error.message)
+        );
+
+    } finally {
+        adminLoading = false;
+    }
+}
+
+
+/* =====================================
+   REDAKTION: BEITRÄGE ANZEIGEN
+===================================== */
+
+async function renderAdminItems() {
+    adminItems.replaceChildren();
+
+    const filtered = currentFilter === "all"
+        ? currentItems
+        : currentItems.filter(item => item.status === currentFilter);
+
+    if (filtered.length === 0) {
+        adminItems.appendChild(
+            element("div", "empty", "Hier gibt es aktuell keine Beiträge.")
+        );
+        return;
+    }
+
+    for (const article of filtered) {
+        const card = element("article", "admin-item");
+        const content = element("div");
+
+        if (article.image_path) {
+            const img = element("img");
+            img.src = safeImageUrl(article.image_path);
+            img.alt = "Titelbild: " + article.title;
+            img.loading = "lazy";
+            card.appendChild(img);
+        }
+
+        const statusNames = {
+            pending: "Ausstehend",
+            approved: "Freigegeben",
+            rejected: "Abgelehnt"
+        };
+
+        content.append(
+            element(
+                "span",
+                "status " + article.status,
+                statusNames[article.status] || article.status
+            ),
+            element("h3", "", article.title),
+            element("p", "muted", article.content)
+        );
+
+        if (article.author_name) {
+            content.appendChild(
+                element("p", "muted", "Autor: " + article.author_name)
+            );
+        }
+
+        content.appendChild(
+            element(
+                "p",
+                "muted",
+                "Erstellt: " + formatDateTime(article.created_at)
+            )
+        );
+
+        if (article.expires_at) {
+            content.appendChild(
+                element(
+                    "p",
+                    "muted",
+                    "Wird gelöscht: " + formatDateTime(article.expires_at)
+                )
+            );
+        }
+
+        const actions = element("div", "actions");
+
+        if (article.status !== "approved") {
+            const approve = element("button", "approve", "Freigeben");
+
+            approve.addEventListener("click", () =>
+                changeStatus(article, "approved")
+            );
+
+            actions.appendChild(approve);
+        }
+
+        if (article.status !== "rejected") {
+            const reject = element("button", "reject", "Ablehnen");
+
+            reject.addEventListener("click", () =>
+                changeStatus(article, "rejected")
+            );
+
+            actions.appendChild(reject);
+        }
+
+        const remove = element("button", "delete", "Löschen");
+
+        remove.addEventListener("click", () =>
+            deleteArticle(article)
+        );
+
+        actions.appendChild(remove);
+        content.appendChild(actions);
+
+        card.appendChild(content);
+        adminItems.appendChild(card);
+    }
+}
+
+
+/* =====================================
+   REDAKTION: STATUS ÄNDERN
+===================================== */
+
+async function changeStatus(article, newStatus) {
+    const action = newStatus === "approved"
+        ? "freigeben"
+        : "ablehnen";
+
+    if (!confirm("Möchtest du diesen Beitrag wirklich " + action + "?")) {
+        return;
+    }
+
+    try {
+        const { error } = await db
+            .from(ARTICLE_TABLE)
+            .update({ status: newStatus })
+            .eq("id", article.id);
+
+        if (error) throw error;
+
+        await loadAdminItems();
+        await loadPublicItems();
+
+    } catch (error) {
+        alert("Fehler beim Ändern: " + error.message);
+    }
+}
+
+
+/* =====================================
+   REDAKTION: BEITRAG LÖSCHEN
+===================================== */
+
+async function deleteArticle(article) {
+    if (!confirm(
+        "Möchtest du diesen Beitrag und sein Bild endgültig löschen?"
+    )) {
+        return;
+    }
+
+    try {
+        const { error } = await db
+            .from(ARTICLE_TABLE)
+            .delete()
+            .eq("id", article.id);
+
+        if (error) throw error;
+
+        await loadAdminItems();
+        await loadPublicItems();
+
+    } catch (error) {
+        alert("Fehler beim Löschen: " + error.message);
+    }
+}
+
+
+/* =====================================
+   FILTER UND VERWALTUNG
+===================================== */
+
+document.querySelectorAll("[data-filter]").forEach(button => {
+    button.addEventListener("click", () => {
+        currentFilter = button.dataset.filter;
+
+        document.querySelectorAll("[data-filter]").forEach(tab => {
+            tab.classList.toggle("active", tab === button);
+        });
+
+        renderAdminItems();
+    });
+});
+
+document.getElementById("refreshButton").addEventListener(
+    "click",
+    async () => {
+        await loadAdminItems();
+        await loadPublicItems();
+    }
+);
+
+document.getElementById("logoutButton").addEventListener(
+    "click",
+    async () => {
+        await db.auth.signOut();
+
+        currentItems = [];
+        showLogin();
+    }
+);
+
+
+/* =====================================
+   SITZUNG UND START
+===================================== */
+
+db.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+        currentItems = [];
+
+        if (location.hash.toLowerCase() === "#admin") {
+            showLogin();
+        }
+    }
+});
+
+updateView();
+
+</script>
 
 <script src="/assets/navigation.js"></script>
-
-<!-- JAHR AUTOMATISCH AKTUALISIEREN -->
-
-<script>
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-</script>
 
 </body>
 </html>
